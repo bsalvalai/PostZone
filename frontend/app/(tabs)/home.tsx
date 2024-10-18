@@ -4,7 +4,7 @@ import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 
 export default function HomeScreen() {
-  const colorScheme = useColorScheme();
+  //const colorScheme = useColorScheme();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Esta es la pagina Inicio</Text>
