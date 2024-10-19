@@ -4,7 +4,7 @@ const connectDB = require('./src/db/config');
 // const cors = require('cors');
 
 const app = express();
-connectDB();
+// connectDB();
 
 /*
 app.use(cors({

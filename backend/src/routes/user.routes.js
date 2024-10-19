@@ -34,16 +34,37 @@ router.post("/login",
 // Logout User
 router.post("/logout", jwtValidator, userController.logoutUser);
 
-// Update User
-router.put("/:id", jwtValidator, userController.updateUser);
-
 // Edit User
-router.patch("/:id", jwtValidator, userController.editUser);
+router.patch("/:id",
+  [
+    jwtValidator,
+    check("id").isMongoId().withMessage("El ID es inválido"),
+    checkFields
+  ], 
+  userController.editUser
+);
+
+// Update User
+router.put("/:id",
+  [
+    jwtValidator,
+    check("id").isMongoId().withMessage("El ID es inválido"),
+    checkFields
+  ], 
+  userController.updateUser
+);
 
 // Delete User
-router.delete("/:id", jwtValidator, userController.deleteUser);
+router.delete("/:id",
+  [
+    jwtValidator,
+    check("id").isMongoId().withMessage("El ID es inválido"),
+    checkFields
+  ], 
+  userController.deleteUser
+);
 
-// Get User by ID
-router.get("/:id", jwtValidator, userController.getUserById);
+// Get User
+router.get("/", jwtValidator, userController.getUser);
 
 module.exports = router;
