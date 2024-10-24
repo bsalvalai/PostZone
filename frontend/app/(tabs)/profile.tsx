@@ -1,7 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { StyleSheet, Image, Dimensions } from "react-native";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "react-native";
+import { green } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 export default function ProfileScreen() {
   const colorScheme = useColorScheme();
   const { width } = Dimensions.get("screen");
@@ -13,7 +15,7 @@ export default function ProfileScreen() {
         source={{
           uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/album-cover-%2358-design-template-bd93962fbbef38a888efdc4f27fe081d_screen.jpg?ts=1611218479",
         }}
-        style={[styles.image, { width: width }, { height: height }]}
+        style={[styles.image, { height: height }]}
       />
       <View style={styles.profileContainer}>
         <Image
@@ -33,6 +35,7 @@ export default function ProfileScreen() {
           ]}
         />
       </View>
+      <View> 
       <Text
         style={[
           styles.usernameStyle,
@@ -44,6 +47,12 @@ export default function ProfileScreen() {
       >
         bautisalva
       </Text>
+      </View>
+      <View style={[{ backgroundColor: "#36D13B" },
+        styles.gamificationLevel
+      ]}> 
+        <Text style={[{fontWeight: "bold"}, {color: "#FFFFFF"}]}>Nivel 1</Text>
+      </View>
       <View style={styles.followStyle}>
         <View style={styles.followersStyle}>
           <Text style={styles.followerTitleStyle}>Seguidores</Text>
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   image: {
-    resizeMode: "contain",
+    resizeMode: "cover",
   },
   profileContainer: {
     position: "absolute",
@@ -103,4 +112,11 @@ const styles = StyleSheet.create({
   followersNumberStyle: {
     fontSize: 20,
   },
+  gamificationLevel: {
+    width: 54,
+    height: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  }
 });

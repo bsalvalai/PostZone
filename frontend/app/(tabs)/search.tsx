@@ -14,14 +14,14 @@ export default function SearchScreen() {
     <View style={styles.container}>
       <TextInput style={[styles.input, 
       { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
-      {color: Colors[colorScheme ?? "light"].text}]} 
+      { color: Colors[colorScheme ?? "light"].text }]} 
 
       value={text}
       onChangeText={onChangeText}
       placeholder="Buscar usuario..."
       placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
       </TextInput>
-      <TabSearch color={Colors[colorScheme ?? "light"].text}/>
+      <TabSearch color={Colors[colorScheme ?? "light"].text} style={{marginTop: 20, marginRight: 10}}/>
     </View>
   );
 }
@@ -29,9 +29,9 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-evenly",
+
   },
   searchBar: {
     fontSize: 20,

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StyleSheet, useColorScheme } from "react-native";
 
 import EditScreenInfo from "@/components/EditScreenInfo";
