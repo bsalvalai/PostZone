@@ -5,7 +5,8 @@ const postSchema = new mongoose.Schema({
   content: { type: String, required: true },
   images: [{ type: String }],
   location: { type: String },
-  likes: { type: Number, default: 0 },
+  likeCount: { type: Number, default: 0 },
+  commentCount: { type: Number, default: 0 },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 }, { timestamps: true });
 

@@ -6,9 +6,7 @@ const checkFields = require("../middlewares/validateFields");
 
 const router = Router();
 
-// --- Rutas públicas ---
-
-// Create User - Registrar un nuevo usuario
+// --- FALTA controller --- Create User (Ruta pública) - Registrar un nuevo usuario
 router.post("/",
   [
     check("name").not().isEmpty().withMessage("Se requiere name de Usuario"),
@@ -20,24 +18,47 @@ router.post("/",
   userController.createUser
 );
 
-// Get Users - Obtener usuarios para la búsqueda
-router.get("/", userController.getUsers);
+// --- FALTA controller --- Get All Users (Ruta pública) - Obtener usuarios para la búsqueda
+router.get("/", userController.getAllUsers);
 
-// Forgot Password - Solicitar recuperación de contraseña
-router.post("/forgot-password", userController.forgotPassword);
+// --- FALTA controller --- Forgot Password (Ruta pública) - Solicitar recuperación de contraseña
+router.post("/forgot-password",
+  [
+    check("email").not().isEmpty().withMessage("Se requiere email de Usuario"),
+    checkFields
+  ],
+  userController.forgotPassword
+);
 
-// --- Rutas protegidas por JWT Token ---
+// --- FALTA controller --- Reset Password (Ruta pública) - Restablecer la contraseña usando el token
+router.post("/reset-password",
+  [
+    check("token").not().isEmpty().withMessage("Se requiere token de Usuario"),
+    check("newPassword").not().isEmpty().withMessage("Se requiere nueva contraseña de Usuario"),
+    checkFields
+  ],
+  userController.resetPassword
+);
 
-// Reset Password - Restablecer la contraseña usando el token
-router.post("/reset-password", userController.resetPassword);
+// --- FALTA controller --- Get My User (Ruta protegida con JWT Token) - Obtener el perfil del usuario autenticado
+router.get('/me', jwtValidator, userController.getMyUser);
 
-// Edit User - Actualizar parcialmente mi perfil
-router.patch('/me', jwtValidator, userController.editUser);
-
-// Delete User - Eliminar mi cuenta
+// --- FALTA controller --- Delete User (Ruta protegida con JWT Token) - Eliminar la cuenta del usuario autenticado
 router.delete('/me', jwtValidator, userController.deleteUser);
 
-// Get User - Obtener el perfil del usuario autenticado
-router.get('/me', jwtValidator, userController.getUser);
+// Edit User (Ruta protegida con JWT Token) - Actualizar parcialmente el perfil del usuario autenticado
+router.patch('/me', jwtValidator, userController.editUser);
+
+// --- FALTA controller --- Get Favorites (Ruta protegida con JWT Token) - Obtener lista de publicaciones favoritas del usuario
+router.get('/me/favorites', jwtValidator, userController.getFavorites);
+
+// --- FALTA controller --- Get Following (Ruta protegida con JWT Token) - Obtener lista de usuarios seguidos
+router.get('/me/following', jwtValidator, userController.getFollowing);
+
+// --- FALTA controller --- Get Followers (Ruta protegida con JWT Token) - Obtener lista de usuarios seguidores
+router.get('/me/followers', jwtValidator, userController.getFollowers);
+
+// --- FALTA controller --- Get User (Ruta protegida con JWT Token) - Obtener perfil de un usuario
+router.get('/:_id', jwtValidator, userController.getUser);
 
 module.exports = router;

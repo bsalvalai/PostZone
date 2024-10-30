@@ -1,15 +1,17 @@
 const userService = require('../services/user.service.js');
 
+// --- FALTA service ---
 const createUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const user = await userService.createUser({ username, email, password });
+    const { name, username, email, password } = req.body;
+    const user = await userService.createUser({ name, username, email, password });
     res.status(201).json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
+// --- FALTA service ---
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -26,15 +28,16 @@ const loginUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   try {
-    const { _id } = req.params;
+    const userId = req.user._id;
     const newData = req.body;
-    const editedUser = await userService.editUser(_id, newData);
+    const editedUser = await userService.editUser(userId, newData);
     res.status(200).json(editedUser);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
+// --- FALTA service ---
 const deleteUser = async (req, res) => {
   try {
     const { _id } = req.params;
@@ -45,6 +48,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// --- FALTA service ---
 const getUser = async (req, res) => {
   try {
     const { _id, email } = req.query;

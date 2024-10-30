@@ -48,33 +48,18 @@ class userService {
     }
   }
 
-  async editUser(_id, newData) {
+  async editUser(userId, newData) {
     try {
-      let editedUser = await User.findByIdAndUpdate(_id, newData, { new: true });
+      let editedUser = await User.findByIdAndUpdate(userId, newData, { new: true });
       if (!editedUser) {
         console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
-
+      
       return editedUser;
     } catch (err) {
       console.error("Error en el Servicio editUser: ", err);
       throw new Error("Error en el Servicio editUser: ", err);
-    }
-  }
-
-  async updateUser(_id, newData) {
-    try {
-      let updatedUser = await User.findByIdAndUpdate(_id, newData, { new: true });
-      if (!updatedUser) {
-        console.error("Usuario no encontrado");
-        throw new Error("Usuario no encontrado");
-      }
-
-      return updatedUser;
-    } catch (err) {
-      console.error("Error en el Servicio updateUser: ", err);
-      throw new Error("Error en el Servicio updateUser: ", err);
     }
   }
 
