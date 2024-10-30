@@ -6,65 +6,38 @@ const checkFields = require("../middlewares/validateFields");
 
 const router = Router();
 
-// Rutas públicas
+// --- Rutas públicas ---
 
-// Create User
+// Create User - Registrar un nuevo usuario
 router.post("/",
   [
+    check("name").not().isEmpty().withMessage("Se requiere name de Usuario"),
     check("username").not().isEmpty().withMessage("Se requiere username de Usuario"),
     check("email").not().isEmpty().withMessage("Se requiere email de Usuario"),
     check("password").not().isEmpty().withMessage("Se requiere contraseña de Usuario"),
-    checkFields,
+    checkFields
   ],
   userController.createUser
 );
 
-// Login User
-router.post("/login",
-  [
-    check("email").not().isEmpty().withMessage("Se requiere email de Usuario"),
-    check("password").not().isEmpty().withMessage("Se requiere contraseña de Usuario"),
-    checkFields,
-  ],
-  userController.loginUser
-);
+// Get Users - Obtener usuarios para la búsqueda
+router.get("/", userController.getUsers);
 
-// Rutas protegidas por JWT Token
+// Forgot Password - Solicitar recuperación de contraseña
+router.post("/forgot-password", userController.forgotPassword);
 
-// Logout User
-router.post("/logout", jwtValidator, userController.logoutUser);
+// --- Rutas protegidas por JWT Token ---
 
-// Edit User
-router.patch("/:id",
-  [
-    jwtValidator,
-    check("id").isMongoId().withMessage("El ID es inválido"),
-    checkFields
-  ], 
-  userController.editUser
-);
+// Reset Password - Restablecer la contraseña usando el token
+router.post("/reset-password", userController.resetPassword);
 
-// Update User
-router.put("/:id",
-  [
-    jwtValidator,
-    check("id").isMongoId().withMessage("El ID es inválido"),
-    checkFields
-  ], 
-  userController.updateUser
-);
+// Edit User - Actualizar parcialmente mi perfil
+router.patch('/me', jwtValidator, userController.editUser);
 
-// Delete User
-router.delete("/:id",
-  [
-    jwtValidator,
-    check("id").isMongoId().withMessage("El ID es inválido"),
-    checkFields
-  ], 
-  userController.deleteUser
-);
+// Delete User - Eliminar mi cuenta
+router.delete('/me', jwtValidator, userController.deleteUser);
 
-// Get User
-router.get("/", jwtValidator, userController.getUser);
+// Get User - Obtener el perfil del usuario autenticado
+router.get('/me', jwtValidator, userController.getUser);
 
 module.exports = router;

@@ -24,31 +24,12 @@ const loginUser = async (req, res) => {
   }
 };
 
-const logoutUser = async (req, res) => {
-  try {
-    res.status(200).json({ message: 'Cierre de sesión exitoso' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 const editUser = async (req, res) => {
   try {
     const { _id } = req.params;
     const newData = req.body;
     const editedUser = await userService.editUser(_id, newData);
     res.status(200).json(editedUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-const updateUser = async (req, res) => {
-  try {
-    const { _id } = req.params;
-    const newData = req.body;
-    const updatedUser = await userService.updateUser(_id, newData);
-    res.status(200).json(updatedUser);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -89,9 +70,7 @@ const getUser = async (req, res) => {
 module.exports = {
   createUser,
   loginUser,
-  logoutUser,
   editUser,
-  updateUser,
   deleteUser,
   getUser
 };

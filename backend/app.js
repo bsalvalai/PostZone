@@ -2,6 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const connectDB = require('./src/db/config');
 // const cors = require('cors');
+const userRoutes = require('./src/routes/user.routes.js');
+const postRoutes = require('./src/routes/post.routes.js');
+const commentRoutes = require('./src/routes/comment.routes.js');
+const sessionRoutes = require('./src/routes/session.routes.js');
+const adRoutes = require('./src/routes/ad.routes.js');
 
 const app = express();
 app.use(express.json());
@@ -16,12 +21,16 @@ app.use(cors({
 app.use(express.json());
 */
 
-app.use('/users', require('./src/routes/user.routes.js'));
+app.use('/users', userRoutes);
+app.use('/posts', postRoutes);
+app.use('/comments', commentRoutes);
+app.use('/sessions', sessionRoutes);
+app.use('/ads', adRoutes);
 
 app.get('/', (req, res) => {
-    res.send(`Servidor funcionando`);
+    res.send(`Server running`);
 });
 
 app.listen(process.env.PORT, () =>{
-    console.log(`Servidor funcionando en el puerto ` + process.env.PORT);
+    console.log(`Server running on port ` + process.env.PORT);
 })

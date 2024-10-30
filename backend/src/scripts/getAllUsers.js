@@ -7,9 +7,18 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
   path: 'C:/Users/Usuario/Downloads/PostZone-users.csv',  // Ruta donde se guarda el .csv
   header: [
-    { id: 'userId', title: 'User_ID' },
+    { id: '_id', title: 'DB_id' },
+    { id: 'name', title: 'Name' },
     { id: 'username', title: 'Username' },
     { id: 'email', title: 'Email' },
+    { id: 'profilePicture', title: 'Profile Picture' },
+    { id: 'bio', title: 'Bio' },
+    { id: 'website', title: 'Website' },
+    { id: 'postsCount', title: 'Post Count' },
+    { id: 'followerCount', title: 'Follower Count' },
+    { id: 'followingCount', title: 'Following Count' },
+    { id: 'followers', title: 'Followers' },
+    { id: 'following', title: 'Following' },
   ],
   fieldDelimiter: ';',  // Configuro el delimitador como un punto y coma para que Excel lo entienda
 });
