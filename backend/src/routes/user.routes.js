@@ -6,19 +6,22 @@ const checkFields = require("../middlewares/validateFields");
 
 const router = Router();
 
-// --- FALTA controller --- Create User (Ruta pública) - Registrar un nuevo usuario
+// Create User (Ruta pública) - Registrar un nuevo usuario
 router.post("/",
   [
     check("name").not().isEmpty().withMessage("Se requiere name de Usuario"),
     check("username").not().isEmpty().withMessage("Se requiere username de Usuario"),
     check("email").not().isEmpty().withMessage("Se requiere email de Usuario"),
     check("password").not().isEmpty().withMessage("Se requiere contraseña de Usuario"),
+    check("gender").not().isEmpty().withMessage("Se requiere gender de Usuario"),
+    check("profilePicture").optional(),
+    check("coverPhoto").optional(),
     checkFields
   ],
   userController.createUser
 );
 
-// --- FALTA controller --- Get All Users (Ruta pública) - Obtener usuarios para la búsqueda
+// Get All Users (Ruta pública) - Obtener usuarios para la búsqueda
 router.get("/", userController.getAllUsers);
 
 // --- FALTA controller --- Forgot Password (Ruta pública) - Solicitar recuperación de contraseña

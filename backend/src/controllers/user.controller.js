@@ -1,11 +1,19 @@
 const userService = require('../services/user.service.js');
 
-// --- FALTA service ---
 const createUser = async (req, res) => {
   try {
-    const { name, username, email, password } = req.body;
-    const user = await userService.createUser({ name, username, email, password });
+    const { name, username, email, password, gender, profilePicture, coverPhoto } = req.body;
+    const user = await userService.createUser({ name, username, email, password, gender, profilePicture, coverPhoto });
     res.status(201).json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -73,6 +81,7 @@ const getUser = async (req, res) => {
 
 module.exports = {
   createUser,
+  getAllUsers,
   loginUser,
   editUser,
   deleteUser,

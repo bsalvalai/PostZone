@@ -5,7 +5,7 @@ const jwtValidator = (req, res, next) => {
   const authHeader = req.header('Authorization');
 
   if (!authHeader) {
-    return res.status(401).json({ message: 'No hay token, autorización denegada' });
+    return res.status(401).json({ message: 'Autorización denegada por falta de token JWT' });
   }
 
   const token = authHeader.replace('Bearer ', '');
