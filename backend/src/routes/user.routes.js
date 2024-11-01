@@ -23,7 +23,7 @@ router.post("/",
 
 // Get All Users (Ruta pública) - Obtener usuarios para la búsqueda
 router.get("/", userController.getAllUsers);
-
+/*
 // --- FALTA controller --- Forgot Password (Ruta pública) - Solicitar recuperación de contraseña
 router.post("/forgot-password",
   [
@@ -48,10 +48,10 @@ router.get('/me', jwtValidator, userController.getMyUser);
 
 // --- FALTA controller --- Delete User (Ruta protegida con JWT Token) - Eliminar la cuenta del usuario autenticado
 router.delete('/me', jwtValidator, userController.deleteUser);
-
+*/
 // Edit User (Ruta protegida con JWT Token) - Actualizar parcialmente el perfil del usuario autenticado
 router.patch('/me', jwtValidator, userController.editUser);
-
+/*
 // --- FALTA controller --- Get Favorites (Ruta protegida con JWT Token) - Obtener lista de publicaciones favoritas del usuario
 router.get('/me/favorites', jwtValidator, userController.getFavorites);
 
@@ -63,5 +63,5 @@ router.get('/me/followers', jwtValidator, userController.getFollowers);
 
 // --- FALTA controller --- Get User (Ruta protegida con JWT Token) - Obtener perfil de un usuario
 router.get('/:_id', jwtValidator, userController.getUser);
-
+*/
 module.exports = router;

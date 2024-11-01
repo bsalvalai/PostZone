@@ -1,6 +1,5 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 class userService {
 
@@ -41,30 +40,6 @@ class userService {
     }
   }
 
-  async loginUser({ email, password }) {
-    try {
-      let user = await User.findOne({email: email});
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        console.error("El email y/o la contraseña son incorrectos");
-        throw new Error("El email y/o la contraseña son incorrectos");
-      }
-
-      let payload = {
-        user: {
-          _id: user._id,
-          username: user.name,
-          email: user.email
-        }
-      };
-      let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });  // Revisar expiración
-  
-      return { token: token, id: user._id, username: user.username, mail: user.email };
-    } catch (err) {
-      console.error("Error en el Servicio loginUser: ", err);
-      throw new Error("Error en el Servicio loginUser: ", err.message);
-    }
-  }
-
   async editUser(userId, newData) {
     try {
       let editedUser = await User.findByIdAndUpdate(userId, newData, { new: true });
@@ -76,7 +51,7 @@ class userService {
       return editedUser;
     } catch (err) {
       console.error("Error en el Servicio editUser: ", err);
-      throw new Error("Error en el Servicio editUser: ", err.message);
+      throw new Error("Error en el Servicio editUser: " + err.message);
     }
   }
 
@@ -93,7 +68,7 @@ class userService {
       return deletedUser;
     } catch (err) {
       console.error("Error en el Servicio deleteUser: ", err);
-      throw new Error("Error en el Servicio deleteUser: ", err.message);
+      throw new Error("Error en el Servicio deleteUser: " + err.message);
     }
   }
 
@@ -102,7 +77,7 @@ class userService {
       return await User.findById(_id);
     } catch (err) {
       console.error("Error en el Servicio getUserById: ", err);
-      throw new Error("Error en el Servicio getUserById: ", err.message);
+      throw new Error("Error en el Servicio getUserById: " + err.message);
     }
   }
 
@@ -111,7 +86,7 @@ class userService {
       return await User.findOne({email: email});
     } catch (err) {
       console.error("Error en el Servicio getUserByEmail: ", err);
-      throw new Error("Error en el Servicio getUserByEmail: ", err.message);
+      throw new Error("Error en el Servicio getUserByEmail: " + err.message);
     }
   }
   

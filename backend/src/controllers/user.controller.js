@@ -19,21 +19,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// --- FALTA service ---
-const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const { token, _id, username, mail } = await userService.loginUser({ email, password });
-    if (!token) {
-      return res.status(401).json({ message: 'Credenciales inválidas para el login' });
-    }
-
-    res.status(200).json({ token, _id, username, mail });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 const editUser = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -82,7 +67,6 @@ const getUser = async (req, res) => {
 module.exports = {
   createUser,
   getAllUsers,
-  loginUser,
   editUser,
   deleteUser,
   getUser
