@@ -9,22 +9,47 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "center",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "contain",
+      "backgroundColor": "#115E85",
+      "dark": {
+        "image":"./assets/images/splash.png",
+        "resizeMode":"contain",
+        "backgroundColor": "#2f2f2f"
+      }
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#115E85",
+      "dark": {
+        "image":"./assets/images/splash.png",
+        "resizeMode":"contain",
+        "backgroundColor": "#2f2f2f"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#115E85",
+      "dark": {
+        "image":"./assets/images/splash.png",
+        "resizeMode":"contain",
+        "backgroundColor": "#2f2f2f"
+        }
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/adaptive-icon.png"
     },
     "plugins": [
       "expo-router"

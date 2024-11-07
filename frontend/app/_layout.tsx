@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
@@ -11,6 +12,9 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import Colors from "@/constants/Colors";
+import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+import { View } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -54,8 +58,15 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack screenOptions={{
+        headerTintColor: Colors[colorScheme ?? "light"].text,
+        headerStyle: [{backgroundColor: Colors[colorScheme ?? "light"].background}],
+        headerLargeTitleShadowVisible: true,
+        headerTitleAlign: "center",
+        headerBackTitleVisible: false,
+        headerShadowVisible: false,
+      }}>
+        <Stack.Screen name="(tabs)" options={{headerShown: false}}  />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
     </ThemeProvider>
