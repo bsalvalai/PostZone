@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const tintColorLight = "#2f95dc";
 const tintColorDark = "#fff";
 
@@ -22,6 +23,12 @@ export default {
     textInputBackGround: "#A7A7A7",
     textColor: "#FFFFFF",
   },
+  gamification: {
+    lvl1: "#36D13B",
+    lvl2: "#352FDE",
+    lvl3: "#C72FDE",
+    lvl4: "#CD4D4F",
+  }
 };
 
 //Color de fondo en modo oscuro: 2F2F2F
