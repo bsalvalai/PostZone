@@ -13,17 +13,9 @@ class userService {
 
       let hashedPassword = await bcrypt.hash(password, 10);
 
-      const user = new User({
-        name,
-        username,
-        email,
-        password: hashedPassword,
-        gender,
-        profilePicture,
-        coverPhoto
-      });
-
+      const user = new User({ name, username, email, password: hashedPassword, gender, profilePicture, coverPhoto });
       await user.save();
+      
       return user;
     } catch (err) {
       console.error("Error en el Servicio createUser: ", err);
