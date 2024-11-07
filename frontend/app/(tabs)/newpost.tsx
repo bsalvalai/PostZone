@@ -1,31 +1,47 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Button, Image, StyleSheet, Dimensions, TouchableOpacity, ScrollView, useColorScheme, Pressable } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import PagerView from "react-native-pager-view";
 import Colors from "@/constants/Colors";
+import { Link, router, Stack } from "expo-router";
+import { Reject } from "../../assets/icons/Reject";
+import { Confirmation } from "../../assets/icons/Confirm"
+import { Router } from "expo-router";
 
 export default function ImageSelectorScreen() {
   const [images, setImages] = useState<ImagePicker.ImagePickerAsset[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { width } = Dimensions.get("screen");
   const colorScheme = useColorScheme();
-  // Función para seleccionar múltiples imágenes
+
+
   const pickImages = async () => {
     if(images.length > 0){
-      setImages([])
+      emptyImages
     }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
       quality: 1,
+      selectionLimit: 4,
     });
 
     if (!result.canceled && result.assets) {
+      console.log(result.assets);
       setImages(result.assets);
       setSelectedIndex(0); // Empezar desde la primera imagen en el carrusel
     }
   };
+
+  
+
+  const emptyImages = () => {
+    if(images.length > 0)
+      setImages([]);
+      setSelectedIndex(0);
+  };
+
 
   return (
     <View style={[styles.container, {backgroundColor: Colors[colorScheme ?? "light"].background}]} >
@@ -42,11 +58,27 @@ export default function ImageSelectorScreen() {
               </View>
             ))}
           </PagerView>
+          <Stack.Screen options={{
+            headerLeft: () => (
+              <Pressable onPress={emptyImages} style={styles.headerButtons}>
+                <Reject color={Colors[colorScheme ?? "light"].text} />
+              </Pressable>
+            ),
+            headerRight: () => (
+              <Pressable style={styles.headerButtons} onPress={()=> router.push({
+                pathname: "/EditPost",
+                params: { images: JSON.stringify(images), }
+              })}> 
+                <Confirmation color={Colors[colorScheme ?? "light"].text} />
+              </Pressable>
+              
+            ),
+          }}/>
         </>
       )}
       
       <TouchableOpacity style={styles.button} onPress={pickImages} >
-        <Text style={[{color: "#FFFFFF"}, {fontSize: 16}]}>Abrir galeria</Text>
+        <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Abrir Galeria</Text>
       </TouchableOpacity>
     </View>
   );
@@ -105,5 +137,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginTop: 15,
     opacity: 0.5,
+  },
+  headerButtons: {
+    marginHorizontal: 25,
   }
 });

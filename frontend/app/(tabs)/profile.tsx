@@ -4,6 +4,8 @@ import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "react-native";
 import { green } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
+
+
 export default function ProfileScreen() {
   const colorScheme = useColorScheme();
   const { width } = Dimensions.get("screen");
@@ -35,23 +37,20 @@ export default function ProfileScreen() {
           ]}
         />
       </View>
-      <View> 
-      <Text
-        style={[
-          styles.usernameStyle,
-          { color: Colors[colorScheme ?? "light"].text },
-          { marginLeft: width / 2 },
-          { marginTop: 15 },
-          { marginBottom: 40 },
-        ]}
-      >
-        bautisalva
-      </Text>
-      </View>
-      <View style={[{ backgroundColor: "#36D13B" },
-        styles.gamificationLevel
-      ]}> 
-        <Text style={[{fontWeight: "bold"}, {color: "#FFFFFF"}]}>Nivel 1</Text>
+      <View style={{flexDirection: "row", marginLeft: (width / 2) - 10, marginTop: 15, marginBottom: 40, alignItems: "center", justifyContent: "space-around"}}> 
+        <Text
+          style={[
+            styles.usernameStyle,
+            { color: Colors[colorScheme ?? "light"].text },
+          ]}
+        >
+          bautisalva
+        </Text>
+        <View style={[{ backgroundColor: "#36D13B" },
+          styles.gamificationLevel
+        ]}> 
+          <Text style={[{fontWeight: "bold"}, {color: "#FFFFFF"}]}>Nivel 1</Text>
+        </View>
       </View>
       <View style={styles.followStyle}>
         <View style={styles.followersStyle}>
@@ -118,5 +117,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    marginRight: 5,
   }
 });

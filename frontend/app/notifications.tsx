@@ -1,12 +1,19 @@
 /* eslint-disable prettier/prettier */
 import { Text, View } from "@/components/Themed";
-import { StyleSheet } from "react-native";
-
+import { Stack } from "expo-router";
+import { StyleSheet, useColorScheme } from "react-native";
+import { Tabs } from "expo-router"
+import Colors from "@/constants/Colors";
+import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 export default function NotificationsScreen() {
+  const colorScheme = useColorScheme();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Esta es la pagina de notificaciones</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="#ADADAD" />
+      <Stack.Screen options={{
+        headerTitle: "Notificaciones"
+      }}/>
+      <View style={[styles.separator, {backgroundColor: Colors[colorScheme ?? "light"].barSeparator}]}  />
     </View>
   );
 }
@@ -14,16 +21,14 @@ export default function NotificationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 2,
     height: 1,
-    width: "80%",
+    width: "100%",
   },
 });

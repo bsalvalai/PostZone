@@ -12,16 +12,18 @@ export default function SearchScreen() {
 
   return (
     <View style={styles.container}>
-      <TextInput style={[styles.input, 
-      { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
-      { color: Colors[colorScheme ?? "light"].text }]} 
+      <View style={styles.searchBar}> 
+        <TextInput style={[styles.input, 
+        { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
+        { color: Colors[colorScheme ?? "light"].text }]} 
 
-      value={text}
-      onChangeText={onChangeText}
-      placeholder="Buscar usuario..."
-      placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
-      </TextInput>
-      <TabSearch color={Colors[colorScheme ?? "light"].text} style={{marginTop: 20, marginRight: 10}}/>
+        value={text}
+        onChangeText={onChangeText}
+        placeholder="Buscar usuario..."
+        placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
+        </TextInput>
+        <TabSearch color={Colors[colorScheme ?? "light"].text}/>
+      </View>
     </View>
   );
 }
@@ -29,20 +31,18 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-
   },
   searchBar: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginTop: 20
   },
   input: {
     borderRadius: 20,
     height: 40,
     width: 300,
-    margin: 12, 
     padding: 10,
+    alignItems: "center"
   },
 });

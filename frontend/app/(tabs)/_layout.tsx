@@ -2,8 +2,8 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
-
+import { Pressable, TouchableOpacity } from "react-native";
+import { Platform } from "react-native";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
@@ -15,16 +15,6 @@ import { TabFavourites } from "../../assets/icons/TabFavourites";
 import { Notifications } from "../../assets/icons/Notifications";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)/home",
-};
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -36,12 +26,20 @@ export default function TabLayout() {
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-        headerStyle: {
-          backgroundColor: Colors[colorScheme ?? "light"].background,
-          borderBottomWidth: 1,
-          borderBottomColor: Colors[colorScheme ?? "light"].barSeparator,
-          height: 67,
-        }, //Color del header
+        headerStyle: Platform.select({ 
+          ios: {
+            backgroundColor: Colors[colorScheme ?? "light"].background,
+            borderBottomWidth: 1,
+            borderBottomColor: Colors[colorScheme ?? "light"].barSeparator,
+            height: 67,
+          },
+          android: {
+            backgroundColor: Colors[colorScheme ?? "light"].background,
+            borderBottomWidth: 1,
+            borderBottomColor: Colors[colorScheme ?? "light"].barSeparator,
+            height: 90,
+          }
+        }), //Color del header
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? "light"].background,
           borderTopWidth: 1,
@@ -49,14 +47,16 @@ export default function TabLayout() {
           height: 70,
         }, //Color de la tabBar
         tabBarShowLabel: false,
+        headerTitleAlign: "center",
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Inicio",
+          headerTitle: "Inicio",
+          headerTitleAlign: "center",
           tabBarIcon: () => (
-            <TabHome color={Colors[colorScheme ?? "light"].text} />
+            <TabHome color={Colors[colorScheme ?? "light"].text}/>
           ),
           headerRight: () => (
             //Meter el logo de las notificaciones aca
