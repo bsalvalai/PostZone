@@ -14,8 +14,8 @@ Para el proyecto se utilizó React Native, Expo, Node.js, Express.js y Mongoose,
 
 ### Figma
 Realizamos el diseño y prototipo de la aplicación previo a su desarrollo utilizando Figma:
-- Diseño: https://www.figma.com/design/9ttlXrRAuq2iIQDkL679sV/Desarrollo-de-aplicaciones-I?node-id=0-1&t=KVD7H821oerIJT2y-0
-- Prototipo: https://www.figma.com/proto/9ttlXrRAuq2iIQDkL679sV/Desarrollo-de-aplicaciones-I?scaling=scale-down&content-scaling=fixed&page-id=0%3A1&node-id=0-1&starting-point-node-id=99%3A428&show-proto-sidebar=1
+- Diseño: https://www.figma.com/design/9ttlXrRAuq2iIQDkL679sV/Desarrollo-de-aplicaciones-I
+- Prototipo: https://www.figma.com/proto/9ttlXrRAuq2iIQDkL679sV/Desarrollo-de-aplicaciones-I?node-id=99-428&starting-point-node-id=99%3A428&show-proto-sidebar=1
 
 ### Swagger
 Documentamos el backend del proyecto utilizando Swagger antes de comenzar el desarrollo de la aplicación:
