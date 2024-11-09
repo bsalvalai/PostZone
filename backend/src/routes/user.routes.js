@@ -23,8 +23,8 @@ router.post("/",
 
 // Get All Users (Ruta pública) - Obtener usuarios para la búsqueda
 router.get("/", userController.getAllUsers);
-/*
-// --- FALTA controller --- Forgot Password (Ruta pública) - Solicitar recuperación de contraseña
+
+// Forgot Password (Ruta pública) - Solicitar recuperación de contraseña
 router.post("/forgot-password",
   [
     check("email").not().isEmpty().withMessage("Se requiere email de Usuario"),
@@ -33,7 +33,7 @@ router.post("/forgot-password",
   userController.forgotPassword
 );
 
-// --- FALTA controller --- Reset Password (Ruta pública) - Restablecer la contraseña usando el token
+// Reset Password (Ruta pública) - Restablecer la contraseña usando el token
 router.post("/reset-password",
   [
     check("token").not().isEmpty().withMessage("Se requiere token de Usuario"),
@@ -43,25 +43,34 @@ router.post("/reset-password",
   userController.resetPassword
 );
 
-// --- FALTA controller --- Get My User (Ruta protegida con JWT Token) - Obtener el perfil del usuario autenticado
+// Get My User (Ruta protegida con JWT Token) - Obtener el perfil del usuario autenticado
 router.get('/me', jwtValidator, userController.getMyUser);
 
-// --- FALTA controller --- Delete User (Ruta protegida con JWT Token) - Eliminar la cuenta del usuario autenticado
+// Delete User (Ruta protegida con JWT Token) - Eliminar la cuenta del usuario autenticado
 router.delete('/me', jwtValidator, userController.deleteUser);
-*/
+
 // Edit User (Ruta protegida con JWT Token) - Actualizar parcialmente el perfil del usuario autenticado
 router.patch('/me', jwtValidator, userController.editUser);
-/*
-// --- FALTA controller --- Get Favorites (Ruta protegida con JWT Token) - Obtener lista de publicaciones favoritas del usuario
+
+// Get Favorites (Ruta protegida con JWT Token) - Obtener lista de publicaciones favoritas del usuario
 router.get('/me/favorites', jwtValidator, userController.getFavorites);
 
-// --- FALTA controller --- Get Following (Ruta protegida con JWT Token) - Obtener lista de usuarios seguidos
+// Get Following (Ruta protegida con JWT Token) - Obtener lista de usuarios seguidos
 router.get('/me/following', jwtValidator, userController.getFollowing);
 
-// --- FALTA controller --- Get Followers (Ruta protegida con JWT Token) - Obtener lista de usuarios seguidores
+// Get Followers (Ruta protegida con JWT Token) - Obtener lista de usuarios seguidores
 router.get('/me/followers', jwtValidator, userController.getFollowers);
 
-// --- FALTA controller --- Get User (Ruta protegida con JWT Token) - Obtener perfil de un usuario
+// Search User (Ruta protegida con JWT Token) - Buscar el perfil de un usuario
+router.post('/search',
+  [
+    jwtValidator,
+    check("username").not().isEmpty().withMessage("Se requiere username de Usuario"),
+    checkFields
+  ],
+  userController.searchUser);
+
+// Get User (Ruta protegida con JWT Token) - Obtener perfil de un usuario
 router.get('/:_id', jwtValidator, userController.getUser);
-*/
+
 module.exports = router;

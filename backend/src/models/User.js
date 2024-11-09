@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
   coverPhoto: { type: String },
   bio: { type: String },
   postCount: { type: Number, default: 0 },
+  commentCount: { type: Number, default: 0 },
+  gamificationLevel: { type: Number, default: 1 },
   followerCount: { type: Number, default: 0 },
   followingCount: { type: Number, default: 0 },
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
