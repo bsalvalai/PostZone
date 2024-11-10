@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
   postCount: { type: Number, default: 0 },
   commentCount: { type: Number, default: 0 },
   gamificationLevel: { type: Number, default: 1 },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
   followerCount: { type: Number, default: 0 },
   followingCount: { type: Number, default: 0 },
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

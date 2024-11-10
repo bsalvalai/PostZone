@@ -24,12 +24,28 @@ const getAllUsers = async (req, res) => {
 };
 
 const forgotPassword = async (req, res) => {
-  // COMPLETAR
-}
+  try {
+    const { email } = req.body;
+    const result = await userService.forgotPassword(email);
+
+    res.status(200).json({ message: 'Correo de recuperación enviado' });
+  } catch (err) {
+    console.error("Error en el Controlador forgotPassword: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const resetPassword = async (req, res) => {
-  // COMPLETAR
-}
+  try {
+    const { recoverToken, newPassword } = req.body;
+    const result = await userService.resetPassword(recoverToken, newPassword);
+    
+    res.status(200).json({ message: 'Contraseña actualizada con éxito' });
+  } catch (err) {
+    console.error("Error en el Controlador resetPassword: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const getMyUser = async (req, res) => {
   try {

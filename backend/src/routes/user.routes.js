@@ -36,7 +36,7 @@ router.post("/forgot-password",
 // Reset Password (Ruta pública) - Restablecer la contraseña usando el token
 router.post("/reset-password",
   [
-    check("token").not().isEmpty().withMessage("Se requiere token de Usuario"),
+    check("recoverToken").not().isEmpty().withMessage("Se requiere token de recuperación de contraseña"),
     check("newPassword").not().isEmpty().withMessage("Se requiere nueva contraseña de Usuario"),
     checkFields
   ],

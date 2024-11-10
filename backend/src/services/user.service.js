@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const transporter = require('../config/email');
 
 class userService {
 
@@ -29,6 +31,74 @@ class userService {
     } catch (err) {
       console.error("Error en el Servicio getAllUsers: " + err);
       throw new Error("Error en el Servicio getAllUsers: " + err.message);
+    }
+  }
+
+  async forgotPassword(email) {
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+
+      const token = crypto.randomBytes(20).toString('hex');  // Genero un token de recuperación
+
+      // Guardo el token y su expiración en el usuario
+      user.resetPasswordToken = token;
+      user.resetPasswordExpires = Date.now() + 3600000;  // 1 hora
+      await user.save();
+
+      // Envío mail con el token
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: 'Recuperación de contraseña - PostZone',
+        html: `
+        <html>
+          <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+              <h2 style="color: #007BFF;">Recuperación de contraseña - PostZone</h2>
+              <p>Recibiste este mensaje porque solicitaste recuperar tu contraseña.</p>
+              <p><strong>Usa el siguiente token para restablecer tu contraseña:</strong></p>
+              <pre style="background-color: #eee; padding: 10px; border-radius: 4px; font-size: 1.1em; font-family: monospace;">${token}</pre>
+              <p style="margin-top: 20px;">Si no solicitaste este cambio, <strong>ignora este correo</strong>.</p>
+            </div>
+          </body>
+        </html>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
+      return true;
+    } catch (err) {
+      console.error("Error en el Servicio forgotPassword: " + err);
+      throw new Error("Error en el Servicio forgotPassword: " + err.message);
+    }
+  }
+
+  async resetPassword(recoverToken, newPassword) {
+    try {
+      // Busco usuario por el token y verifico que el token no haya expirado
+      const user = await User.findOne({
+        resetPasswordToken: recoverToken,
+        resetPasswordExpires: { $gt: Date.now() }
+      });
+
+      if (!user) {
+        throw new Error("Token inválido o expirado");
+      }
+
+      // Hasheo la nueva contraseña y actualizo el usuario
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;  // Actualizo la contraseña
+      user.resetPasswordToken = undefined;  // Limpio el token
+      user.resetPasswordExpires = undefined;
+      await user.save();
+
+      return true;
+    } catch (err) {
+      console.error("Error en el Servicio resetPassword: " + err);
+      throw new Error("Error en el Servicio resetPassword: " + err.message);
     }
   }
 
