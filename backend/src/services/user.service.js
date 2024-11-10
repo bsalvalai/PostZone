@@ -41,7 +41,7 @@ class userService {
         throw new Error("Usuario no encontrado");
       }
 
-      const token = crypto.randomBytes(20).toString('hex');  // Genero un token de recuperación
+      const token = crypto.randomBytes(3).toString('hex');  // Genero un token de recuperación
 
       // Guardo el token y su expiración en el usuario
       user.resetPasswordToken = token;
@@ -60,7 +60,9 @@ class userService {
               <h2 style="color: #007BFF;">Recuperación de contraseña - PostZone</h2>
               <p>Recibiste este mensaje porque solicitaste recuperar tu contraseña.</p>
               <p><strong>Usa el siguiente token para restablecer tu contraseña:</strong></p>
-              <pre style="background-color: #eee; padding: 10px; border-radius: 4px; font-size: 1.1em; font-family: monospace;">${token}</pre>
+              <p style="background-color: #eee; padding: 10px; border-radius: 4px; font-size: 1.6em; color: #1a4a75; font-weight: bold; text-align: left; letter-spacing: 3px;">
+                ${token}
+              </p>
               <p style="margin-top: 20px;">Si no solicitaste este cambio, <strong>ignora este correo</strong>.</p>
             </div>
           </body>

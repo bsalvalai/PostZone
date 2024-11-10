@@ -8,16 +8,14 @@ const userSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   profilePicture: { type: String },
   coverPhoto: { type: String },
-  bio: { type: String },
-  postCount: { type: Number, default: 0 },
   commentCount: { type: Number, default: 0 },
   gamificationLevel: { type: Number, default: 1 },
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
-  followerCount: { type: Number, default: 0 },
-  followingCount: { type: Number, default: 0 },
-  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+  userPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+  favoritePosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+  followerUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  followingUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
