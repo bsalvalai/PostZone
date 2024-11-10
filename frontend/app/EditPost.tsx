@@ -1,19 +1,43 @@
 /* eslint-disable prettier/prettier */
 import { View } from "@/components/Themed";
-import { Stack } from "expo-router";
+import { Stack, Router, router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, useColorScheme, TextInput, TouchableOpacity, Alert } from "react-native";
 import Colors from "@/constants/Colors";
 import { useLocalSearchParams } from "expo-router";
-import { Router } from "expo-router";
 import * as ImagePicker from 'expo-image-picker'
+import * as Location from 'expo-location';
 
+type Coordinates = Location.LocationObject | null
 
 export default function EditPost() {
-    const [location, onChangeLocation] = useState("")
+    const [location, setLocation] = useState<Coordinates>(null);
     const [description, onChangeDescription] = useState("")
+    const [adress, setAdress] = useState("")
+    const [locationPermission, setLocationPermission] = useState(false)
     const colorScheme = useColorScheme();
     let { images }= useLocalSearchParams();
+
+    useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            console.log("RECHAZADO")
+            return;
+          }
+          console.log("ACEPTADO")
+          setLocationPermission(true)
+          let currentLocation = await Location.getCurrentPositionAsync({}).then();
+          setLocation(currentLocation);
+
+        })();
+      }, []);
+
+      useEffect(()=>{
+        if(Location)
+            reverseGeocode();
+            console.log("direccion: ", adress)
+      },[location])
 
     const handleImageUpload = () => { 
         if(!images){
@@ -22,7 +46,25 @@ export default function EditPost() {
             )
         }
     }
-    console.log("IMAGENES PASADAS: ", images)
+
+    const reverseGeocode = async () => {
+        
+        if(location?.coords.latitude !== undefined && location?.coords.longitude !== undefined){
+            const getReverseGeocodedLocation = await Location.reverseGeocodeAsync({
+                latitude: location?.coords.latitude, 
+                longitude: location?.coords.longitude})
+
+            const { city, country, region } = getReverseGeocodedLocation[0];
+            const adress = city + ", " + region + ", " + country 
+            setAdress(adress);
+        }
+    }
+
+    //CREO QUE TIENE QUE SER ASYNC (?)
+    const handleAccept = () => {
+        console.log(images)
+        router.replace("/")
+    }
 
     return (
         <View style={styles.container}>
@@ -32,16 +74,7 @@ export default function EditPost() {
             <View style={[styles.separator, {backgroundColor: Colors[colorScheme ?? "light"].barSeparator}]}  />
             <View style={styles.configuration}>
                 <Text style={[styles.title, {color: Colors[colorScheme ?? "light"].text}]}>Configuracion del post</Text>
-                <TextInput style={[styles.input, 
-                    { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
-                    { color: Colors[colorScheme ?? "light"].text },
-                    { height: 40 }]} 
-
-                    value={location}
-                    onChangeText={onChangeLocation}
-                    placeholder="Ingrese ubicacion (Opcional)..."
-                    placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
-                    </TextInput>
+                <Text style={[styles.input, {color: Colors[colorScheme ?? "light"].text}]}>Ubicacion: {locationPermission ? adress : "No hay ubicacion"}</Text>
                 <TextInput style={[styles.input, 
                     { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
                     { color: Colors[colorScheme ?? "light"].text },
@@ -55,7 +88,7 @@ export default function EditPost() {
                     placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
                 > 
                 </TextInput>
-                <TouchableOpacity style={styles.button} onPress={handleImageUpload}>
+                <TouchableOpacity style={styles.button} onPress={handleAccept}>
                     <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Aceptar</Text>
                 </TouchableOpacity>
             </View>
