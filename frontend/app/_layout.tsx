@@ -11,9 +11,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/components/useColorScheme";
-import Colors from "@/constants/Colors";
-import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+import { useColorScheme } from "../components/useColorScheme";
+import Colors from "../constants/Colors";
+import { useClientOnlyValue } from "../components/useClientOnlyValue";
 import { View } from "react-native";
 
 export {

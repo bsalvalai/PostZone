@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Text, View } from "@/components/Themed";
+import { Text, View } from "../../components/Themed";
 import { StyleSheet } from "react-native";
 
 export default function FavouritesScreen() {

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet, Image, Dimensions } from "react-native";
-import { Text, View } from "@/components/Themed";
-import Colors from "@/constants/Colors";
+import { Text, View } from "../../components/Themed";
+import Colors from "../../constants/Colors";
 import { useColorScheme } from "react-native";
 import { green } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 

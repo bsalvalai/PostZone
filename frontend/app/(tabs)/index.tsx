@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet, useColorScheme } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
-import Colors  from "@/constants/Colors";
+import EditScreenInfo from "../../components/EditScreenInfo";
+import { Text, View } from "../../components/Themed";
+import Colors  from "../../constants/Colors";
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
   return (

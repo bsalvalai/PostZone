@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Text, View } from "@/components/Themed";
+import { Text, View } from "../../components/Themed";
 import { StyleSheet, TextInput, useColorScheme, Dimensions } from "react-native";
-import Colors from "@/constants/Colors";
+import Colors from "../../constants/Colors";
 import { useEffect, useState } from "react";
-import { TabSearch } from "@/assets/icons/TabSearch";
+import { TabSearch } from "../../assets/icons/TabSearch";
 
 export default function SearchScreen() {
   const colorScheme = useColorScheme();

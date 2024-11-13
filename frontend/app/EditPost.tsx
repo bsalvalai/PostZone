@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { View } from "@/components/Themed";
+import { View } from "../components/Themed";
 import { Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, useColorScheme, TextInput, TouchableOpacity, Alert } from "react-native";
-import Colors from "@/constants/Colors";
+import Colors from "../constants/Colors";
 import { useLocalSearchParams } from "expo-router";
 import { Router } from "expo-router";
 import * as ImagePicker from 'expo-image-picker'
