@@ -5,7 +5,16 @@ class postService {
 
   async createPost({ user, content, images, location }) {
     try {
-      const post = new Post({ user, content, images, location });
+      let currentTime = Date.now();
+      let date = new Date(currentTime);
+
+      // Formateo la fecha como "DD/MM/AAAA"
+      let day = String(date.getDate()).padStart(2, '0'); // Aseguro que el día tenga dos dígitos
+      let month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() devuelve 0 para enero, por eso sumo 1
+      let year = date.getFullYear();
+      let formattedDate = `${day}/${month}/${year}`;
+
+      const post = new Post({ user, content, images, date: formattedDate, location });
       await post.save();
 
       return post;
@@ -70,7 +79,16 @@ class postService {
 
   async addCommentPost(postId, { user, message }) {
     try {
-      const comment = new Comment({ post: postId, user, message });
+      let currentTime = Date.now();
+      let date = new Date(currentTime);
+
+      // Formateo la fecha como "DD/MM/AAAA"
+      let day = String(date.getDate()).padStart(2, '0'); // Aseguro que el día tenga dos dígitos
+      let month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() devuelve 0 para enero, por eso sumo 1
+      let year = date.getFullYear();
+      let formattedDate = `${day}/${month}/${year}`;
+
+      const comment = new Comment({ post: postId, user, message, date: formattedDate });
       await comment.save();
 
       const post = await Post.findByIdAndUpdate(
