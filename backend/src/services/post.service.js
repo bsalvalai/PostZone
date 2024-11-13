@@ -10,7 +10,7 @@ class postService {
 
       return post;
     } catch (err) {
-      console.error("Error en el Servicio createPost: ", err);
+      console.error("Error en el Servicio createPost: " + err);
       throw new Error("Error en el Servicio createPost: " + err.message);
     }
   }
@@ -25,7 +25,7 @@ class postService {
 
       return deletedPost;
     } catch (err) {
-      console.error("Error en el Servicio deletePost: ", err);
+      console.error("Error en el Servicio deletePost: " + err);
       throw new Error("Error en el Servicio deletePost: " + err.message);
     }
   }
@@ -44,7 +44,7 @@ class postService {
 
       return post;
     } catch (err) {
-      console.error("Error en el Servicio addFavoritePost: ", err);
+      console.error("Error en el Servicio addFavoritePost: " + err);
       throw new Error("Error en el Servicio addFavoritePost: " + err.message);
     }
   }
@@ -63,7 +63,7 @@ class postService {
 
       return post;
     } catch (err) {
-      console.error("Error en el Servicio removeFavoritePost: ", err);
+      console.error("Error en el Servicio removeFavoritePost: " + err);
       throw new Error("Error en el Servicio removeFavoritePost: " + err.message);
     }
   }
@@ -75,7 +75,7 @@ class postService {
 
       const post = await Post.findByIdAndUpdate(
         postId,
-        { $push: { comments: comment._id }, $inc: { commentCount: 1 } },
+        { $push: { postComments: comment._id }, $inc: { commentCount: 1 } },
         { new: true }
       );
 
@@ -85,7 +85,7 @@ class postService {
 
       return post;
     } catch (err) {
-      console.error("Error en el Servicio addCommentPost: ", err);
+      console.error("Error en el Servicio addCommentPost: " + err);
       throw new Error("Error en el Servicio addCommentPost: " + err.message);
     }
   }
@@ -99,7 +99,7 @@ class postService {
 
       const post = await Post.findByIdAndUpdate(
         postId,
-        { $pull: { comments: commentId }, $inc: { commentCount: -1 } },
+        { $pull: { postComments: commentId }, $inc: { commentCount: -1 } },
         { new: true }
       );
 
@@ -109,10 +109,29 @@ class postService {
 
       return post;
     } catch (err) {
-      console.error("Error en el Servicio removeCommentPost: ", err);
+      console.error("Error en el Servicio removeCommentPost: " + err);
       throw new Error("Error en el Servicio removeCommentPost: " + err.message);
     }
   }
+
+  async getPostComments(postId) {
+    try {
+      const post = await Post.findById(postId).populate({
+        path: 'postComments',
+        model: 'Comment'
+      });
+  
+      if (!post) {
+        throw new Error("Publicación no encontrada");
+      }
+  
+      return post.postComments;
+    } catch (err) {
+      console.error("Error en el Servicio getPostComments: " + err);
+      throw new Error("Error en el Servicio getPostComments: " + err.message);
+    }
+  }
+
 }
 
 module.exports = new postService();

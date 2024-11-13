@@ -50,7 +50,7 @@ const resetPassword = async (req, res) => {
 const getMyUser = async (req, res) => {
   try {
     const userId = req.user._id;
-    const user = await userService.editUser(userId);
+    const user = await userService.getUserById(userId);
 
     res.status(200).json(user);
   } catch (err) {
@@ -92,18 +92,53 @@ const editUser = async (req, res) => {
   }
 };
 
+const getUserPosts = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const userPosts = await userService.getUserPosts(userId);
+
+    res.status(200).json(userPosts);
+  } catch (err) {
+    console.error("Error en el Controlador getUserPosts: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const getFavorites = async (req, res) => {
-  // COMPLETAR
-}
+  try {
+    const userId = req.user._id;
+    const favorites = await userService.getFavorites(userId);
+
+    res.status(200).json(favorites);
+  } catch (err) {
+    console.error("Error en el Controlador getFavorites: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const getFollowing = async (req, res) => {
-  // COMPLETAR
-}
+  try {
+    const userId = req.user._id;
+    const following = await userService.getFollowing(userId);
+
+    res.status(200).json(following);
+  } catch (err) {
+    console.error("Error en el Controlador getFollowing: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const getFollowers = async (req, res) => {
-  // COMPLETAR
-}
+  try {
+    const userId = req.user._id;
+    const followers = await userService.getFollowers(userId);
+
+    res.status(200).json(followers);
+  } catch (err) {
+    console.error("Error en el Controlador getFollowers: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const searchUser = async (req, res) => {
   try {
@@ -150,6 +185,7 @@ module.exports = {
   getMyUser,
   deleteUser,
   editUser,
+  getUserPosts,
   getFavorites,
   getFollowing,
   getFollowers,

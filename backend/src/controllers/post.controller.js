@@ -4,6 +4,7 @@ const createPost = async (req, res) => {
   try {
     const { user, content, images, location } = req.body;
     const post = await postService.createPost({ user, content, images, location });
+
     res.status(201).json(post);
   } catch (err) {
     console.error("Error en el Controlador createPost: " + err);
@@ -15,6 +16,7 @@ const deletePost = async (req, res) => {
   try {
     const { _id } = req.params;
     const deletedPost = await postService.deletePost(_id);
+
     res.status(200).json(deletedPost);
   } catch (err) {
     console.error("Error en el Controlador deletePost: " + err);
@@ -26,6 +28,7 @@ const addFavoritePost = async (req, res) => {
   try {
     const { _id } = req.params;
     const updatedPost = await postService.addFavoritePost(_id);
+
     res.status(200).json(updatedPost);
   } catch (err) {
     console.error("Error en el Controlador addFavoritePost: " + err);
@@ -37,6 +40,7 @@ const removeFavoritePost = async (req, res) => {
   try {
     const { _id } = req.params;
     const updatedPost = await postService.removeFavoritePost(_id);
+
     res.status(200).json(updatedPost);
   } catch (err) {
     console.error("Error en el Controlador removeFavoritePost: " + err);
@@ -49,6 +53,7 @@ const addCommentPost = async (req, res) => {
     const { _id } = req.params;
     const { user, message } = req.body;
     const updatedPost = await postService.addCommentPost(_id, { user, message });
+
     res.status(201).json(updatedPost);
   } catch (err) {
     console.error("Error en el Controlador addCommentPost: " + err);
@@ -61,9 +66,22 @@ const removeCommentPost = async (req, res) => {
     const { _id } = req.params;
     const { commentId } = req.body;
     const updatedPost = await postService.removeCommentPost(_id, commentId);
+    
     res.status(200).json(updatedPost);
   } catch (err) {
     console.error("Error en el Controlador removeCommentPost: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const getPostComments = async (req, res) => {
+  try {
+    const postId = req.params._id;
+    const comments = await userService.getPostComments(postId);
+
+    res.status(200).json(comments);
+  } catch (err) {
+    console.error("Error en el Controlador getPostComments: " + err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -74,5 +92,6 @@ module.exports = {
   addFavoritePost,
   removeFavoritePost,
   addCommentPost,
-  removeCommentPost
+  removeCommentPost,
+  getPostComments
 };

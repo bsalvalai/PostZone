@@ -49,4 +49,7 @@ router.delete("/:_id/comments",
   postController.removeCommentPost
 );
 
+// Get Post Comments (Ruta protegida con JWT Token) - Obtener lista de comentarios de la publicación
+router.get('/:_id/comments', jwtValidator, postController.getPostComments);
+
 module.exports = router;

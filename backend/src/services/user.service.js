@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Post = require('../models/Post');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const transporter = require('../config/email');
@@ -104,6 +105,23 @@ class userService {
     }
   }
 
+  async deleteUser(userId) {
+    try {
+      const deletedUser = await User.findById(userId);
+      if (!deletedUser) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+
+      await User.findByIdAndDelete(userId);
+
+      return deletedUser;
+    } catch (err) {
+      console.error("Error en el Servicio deleteUser: " +  err);
+      throw new Error("Error en el Servicio deleteUser: " + err.message);
+    }
+  }
+
   async editUser(userId, newData) {
     try {
       if (newData.username) {
@@ -129,20 +147,75 @@ class userService {
     }
   }
 
-  async deleteUser(_id) {
+  async getUserPosts(userId) {
     try {
-      const deletedUser = await User.findById(_id);
-      if (!deletedUser) {
-        console.error("Usuario no encontrado");
+      const user = await User.findById(userId).populate({
+        path: 'userPosts',
+        model: 'Post'
+      });
+  
+      if (!user) {
         throw new Error("Usuario no encontrado");
       }
-
-      await User.findByIdAndDelete(_id);
-
-      return deletedUser;
+  
+      return user.userPosts;
     } catch (err) {
-      console.error("Error en el Servicio deleteUser: " +  err);
-      throw new Error("Error en el Servicio deleteUser: " + err.message);
+      console.error("Error en el Servicio getUserPosts: " + err);
+      throw new Error("Error en el Servicio getUserPosts: " + err.message);
+    }
+  }
+
+  async getFavorites(userId) {
+    try {
+      const user = await User.findById(userId).populate({
+        path: 'favoritePosts',
+        model: 'Post'
+      });
+  
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+  
+      return user.favoritePosts;
+    } catch (err) {
+      console.error("Error en el Servicio getFavorites: " + err);
+      throw new Error("Error en el Servicio getFavorites: " + err.message);
+    }
+  }
+  
+  async getFollowing(userId) {
+    try {
+      const user = await User.findById(userId).populate({
+        path: 'followingUsers',
+        model: 'User'
+      });
+  
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+  
+      return user.followingUsers;
+    } catch (err) {
+      console.error("Error en el Servicio getFollowing: " + err);
+      throw new Error("Error en el Servicio getFollowing: " + err.message);
+    }
+  }
+  
+  async getFollowers(userId) {
+    try {
+      const user = await User.findById(userId).populate({
+        path: 'followerUsers',
+        model: 'User'
+      });
+  
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+  
+      return user.followerUsers;
+    } catch (err) {
+      console.error("Error en el Servicio getFollowers: " + err);
+      throw new Error("Error en el Servicio getFollowers: " + err.message);
     }
   }
 
@@ -150,7 +223,7 @@ class userService {
     try {
       // Uso expresión regular para coincidencia parcial en username (insensible a mayúsculas)
       const regex = new RegExp(username, 'i');
-      return await User.find({ username: regex }).sort({ username: 1 }); // Ordeno alfabéticamente por username
+      return await User.find({ username: regex }).sort({ username: 1 });  // Ordeno alfabéticamente por username
     } catch (err) {
       console.error("Error en el Servicio searchUsersByUsername: " + err);
       throw new Error("Error en el Servicio searchUsersByUsername: " + err.message);

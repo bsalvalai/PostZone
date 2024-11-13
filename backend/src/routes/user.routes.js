@@ -52,6 +52,9 @@ router.delete('/me', jwtValidator, userController.deleteUser);
 // Edit User (Ruta protegida con JWT Token) - Actualizar parcialmente el perfil del usuario autenticado
 router.patch('/me', jwtValidator, userController.editUser);
 
+// Get User Posts (Ruta protegida con JWT Token) - Obtener lista de publicaciones del usuario
+router.get('/me/posts', jwtValidator, userController.getUserPosts);
+
 // Get Favorites (Ruta protegida con JWT Token) - Obtener lista de publicaciones favoritas del usuario
 router.get('/me/favorites', jwtValidator, userController.getFavorites);
 
