@@ -35,7 +35,7 @@ export default function SetProfilePhoto() {
             let result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            quality: 1,
+            quality: 0.5,
             })
 
             if (!result.canceled && result.assets[0]) {
