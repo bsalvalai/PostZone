@@ -8,6 +8,7 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router"
 import * as ImagePicker from "expo-image-picker"
+import React from "react";
 
 
 

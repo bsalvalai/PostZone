@@ -5,6 +5,7 @@ import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import Colors  from "@/constants/Colors";
 import { Link } from "expo-router";
+import React from "react";
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
   return (
