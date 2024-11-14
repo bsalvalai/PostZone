@@ -12,6 +12,7 @@ export default {
     barSeparator: "#ADADAD",
     textInputBackGround: "#E7E7E7",
     textColor: "#000000",
+    googleButton: "#E7E7E7"
   },
   dark: {
     text: "#EEEEEE",
@@ -22,6 +23,7 @@ export default {
     barSeparator: "#EEEEEE",
     textInputBackGround: "#A7A7A7",
     textColor: "#FFFFFF",
+    googleButton: "#EEEEEE"
   },
   gamification: {
     lvl1: "#36D13B",

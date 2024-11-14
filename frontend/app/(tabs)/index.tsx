@@ -1,9 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { StyleSheet, useColorScheme } from "react-native";
+import { Pressable, StyleSheet, useColorScheme } from "react-native";
 
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import Colors  from "@/constants/Colors";
+import { Link } from "expo-router";
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
   return (
@@ -11,6 +12,11 @@ export default function HomeScreen() {
       <Text style={styles.title}>Esta es la pagina Inicio</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="#ADADAD" />
       <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <Link href="/Login" asChild>
+        <Pressable> 
+          <Text>IR A LOGIN</Text>
+        </Pressable>
+      </Link>
     </View>
   );
 }
