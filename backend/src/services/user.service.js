@@ -25,19 +25,11 @@ class userService {
     }
   }
 
-  async getAllUsers() {
-    try {
-      return await User.find({});
-    } catch (err) {
-      console.error("Error en el Servicio getAllUsers: " + err);
-      throw new Error("Error en el Servicio getAllUsers: " + err.message);
-    }
-  }
-
   async forgotPassword(email) {
     try {
       const user = await User.findOne({ email });
       if (!user) {
+        console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
 
@@ -87,6 +79,7 @@ class userService {
       });
 
       if (!user) {
+        console.error("Token inválido o expirado");
         throw new Error("Token inválido o expirado");
       }
 
@@ -116,7 +109,7 @@ class userService {
       let postCount = user.userPosts.length;  // Obtengo la cantidad de posts a partir del array
       let commentCount = user.commentCount;
 
-      // Actualizo el nivel de gamificación
+      // Verifico el nivel de gamificación
       if (postCount >= 4 && commentCount >= 4) {
         user.gamificationLevel = 4;
       } else if (postCount >= 4) {

@@ -21,9 +21,6 @@ router.post("/",
   userController.createUser
 );
 
-// Get All Users (Ruta pública) - Obtener usuarios para la búsqueda
-router.get("/", userController.getAllUsers);
-
 // Forgot Password (Ruta pública) - Solicitar recuperación de contraseña
 router.post("/forgot-password",
   [

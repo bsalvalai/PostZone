@@ -12,17 +12,6 @@ const createUser = async (req, res) => {
   }
 };
 
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await userService.getAllUsers();
-
-    res.status(200).json(users);
-  } catch (err) {
-    console.error("Error en el Controlador getAllUsers: " + err);
-    res.status(500).json({ error: err.message });
-  }
-};
-
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
