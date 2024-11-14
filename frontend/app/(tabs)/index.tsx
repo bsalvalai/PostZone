@@ -24,7 +24,6 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Esta es la pagina Inicio</Text>
-      <AdvancedImage cldImg={myImage} style={[{width: width}, {height: width}]}/>
       <Link href="/Login" asChild>
         <Pressable> 
           <Text>IR A LOGIN</Text>
