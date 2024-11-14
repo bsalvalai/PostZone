@@ -39,15 +39,17 @@ export default function TabLayout() {
             borderBottomColor: Colors[colorScheme ?? "light"].barSeparator,
             height: 90,
           }
-        }), //Color del header
+        }), 
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? "light"].background,
           borderTopWidth: 1,
           borderTopColor: Colors[colorScheme ?? "light"].barSeparator,
           height: 70,
+          paddingTop: 15,
         }, //Color de la tabBar
         tabBarShowLabel: false,
         headerTitleAlign: "center",
+        headerTintColor: Colors[colorScheme ?? "light"].text
       }}
     >
       <Tabs.Screen

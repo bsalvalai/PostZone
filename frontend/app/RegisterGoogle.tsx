@@ -1,41 +1,45 @@
 /* eslint-disable prettier/prettier */
-import { StyleSheet, TextInput, TouchableOpacity, useColorScheme } from "react-native";
+import { Pressable, StyleSheet, TextInput, TouchableOpacity, useColorScheme } from "react-native";
 
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Stack } from "expo-router"
+import { Stack, router } from "expo-router"
 
-export default function Login() {
+export default function RegisterGoogle() {
     const colorScheme = useColorScheme();
     const [mail, onChangeMail] = useState("")
     const [password, onChangePassword] = useState("")
-    
-    const handleLogin = () =>{
-        //VALIDAR LA CUENTA
-        if(!mail || !password){
-            alert("ERROR TE OLVIDASTE DE LLENAR TODO")
-        }
-    }
+    const [repeatPassword, onChangeRepeatPassword] = useState("")
+    const [username, onChangeUsername] = useState("")
+    const [gender, onChangeGender] = useState("")
 
+
+    const handleNext = () => {
+        //HABRIA QUE VERIFICAR LOS MAILS, PASSWORDS Y USERNAME
+        router.push({
+            pathname: "/SetProfilePhoto",
+            params: {mail, password, username, gender},
+        })
+    }
     return (
     <View style={styles.container}>
         <Stack.Screen
             options={{
-                headerTitle: "",
-                headerBackTitle: "Atras"
+                headerTitle: ""
             }}
         />
-        <Text style={[styles.title, {color: Colors[colorScheme ?? "light"].text}]}>Iniciar sesion</Text>
+        <Text style={[styles.title, {color: Colors[colorScheme ?? "light"].text}]}>Crear Cuenta (GOOGLE)</Text>
+    
         <TextInput style={[styles.input, 
         { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
         { color: Colors[colorScheme ?? "light"].text }]} 
 
-        value={mail}
-        onChangeText={onChangeMail}
-        placeholder="Ingrese su E-Mail"
+        value={username}
+        onChangeText={onChangeUsername}
+        placeholder="Ingrese su nombre de usuario..."
         placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
         </TextInput>
 
@@ -43,24 +47,22 @@ export default function Login() {
         { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
         { color: Colors[colorScheme ?? "light"].text }]} 
 
-        value={password}
-        onChangeText={onChangePassword}
-        placeholder="Ingrese su contraseña"
+        value={gender}
+        onChangeText={onChangeGender}
+        placeholder="Ingrese su genero..."
         placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
         </TextInput>
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Log In</Text>
+
+
+        <Link href="/Login" asChild>
+            <TouchableOpacity>
+                <Text style={{marginTop: 20}}>Ya tienes una cuenta? Inicia sesion aqui</Text>
+            </TouchableOpacity>
+        </Link>
+        
+        <TouchableOpacity style={styles.button} onPress={handleNext}>
+            <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Siguiente</Text>
         </TouchableOpacity>
-        <Link href="/CreateAccount" asChild>
-            <TouchableOpacity>
-                <Text style={{marginTop: 20}}>No tienes una cuenta? Registrate aqui</Text>
-            </TouchableOpacity>
-        </Link>
-        <Link href="/RecoverMail" asChild>
-            <TouchableOpacity>
-                <Text style={{marginTop: 40}}>Olvidaste tu contraseña? Presione aqui</Text>
-            </TouchableOpacity>
-        </Link>
     </View>
     
 );
