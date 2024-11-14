@@ -215,6 +215,74 @@ class userService {
       throw new Error("Error en el Servicio getFavorites: " + err.message);
     }
   }
+
+  async followUser(userId, targetUserId) {
+    try {
+      if (userId === targetUserId) {
+        console.error("Un usuario no puede seguirse a sí mismo");
+        throw new Error("Un usuario no puede seguirse a sí mismo");
+      }
+
+      const user = await User.findById(userId);
+      const targetUser = await User.findById(targetUserId);
+
+      if (!user || !targetUser) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+
+      // Verifico si ya está siguiendo al usuario objetivo
+      if (user.followingUsers.includes(targetUserId)) {
+        console.error("Ya sigues a este usuario");
+        throw new Error("Ya sigues a este usuario");
+      }
+
+      // Agrego a following del usuario autenticado y a followers del usuario objetivo
+      user.followingUsers.push(targetUserId);
+      targetUser.followerUsers.push(userId);
+
+      await user.save();
+      await targetUser.save();
+
+      return { message: "Empezaste a seguir al usuario con éxito" };
+    } catch (err) {
+      console.error("Error en el Servicio followUser: " + err);
+      throw new Error("Error en el Servicio followUser: " + err.message);
+    }
+  }
+
+  async unfollowUser(userId, targetUserId) {
+    try {
+      const user = await User.findById(userId);
+      const targetUser = await User.findById(targetUserId);
+
+      if (!user || !targetUser) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+
+      // Verifico si realmente está siguiendo al usuario objetivo
+      const followingIndex = user.followingUsers.indexOf(targetUserId);
+      const followerIndex = targetUser.followerUsers.indexOf(userId);
+
+      if (followingIndex === -1 || followerIndex === -1) {
+        console.error("No estás siguiendo a este usuario");
+        throw new Error("No estás siguiendo a este usuario");
+      }
+
+      // Elimino del array following del usuario autenticado y del array followers del usuario objetivo
+      user.followingUsers.splice(followingIndex, 1);
+      targetUser.followerUsers.splice(followerIndex, 1);
+
+      await user.save();
+      await targetUser.save();
+
+      return { message: "Dejaste de seguir al usuario con éxito" };
+    } catch (err) {
+      console.error("Error en el Servicio unfollowUser: " + err);
+      throw new Error("Error en el Servicio unfollowUser: " + err.message);
+    }
+  }
   
   async getFollowing(userId) {
     try {

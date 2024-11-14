@@ -116,6 +116,32 @@ const getFavorites = async (req, res) => {
   }
 };
 
+const followUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { _id: targetUserId } = req.params;
+    const result = await userService.followUser(userId, targetUserId);
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Error en el Controlador followUser: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const unfollowUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { _id: targetUserId } = req.params;
+    const result = await userService.unfollowUser(userId, targetUserId);
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Error en el Controlador unfollowUser: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const getFollowing = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -187,6 +213,8 @@ module.exports = {
   editUser,
   getUserPosts,
   getFavorites,
+  followUser,
+  unfollowUser,
   getFollowing,
   getFollowers,
   searchUser,

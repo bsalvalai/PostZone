@@ -58,6 +58,12 @@ router.get('/me/posts', jwtValidator, userController.getUserPosts);
 // Get Favorites (Ruta protegida con JWT Token) - Obtener lista de publicaciones favoritas del usuario
 router.get('/me/favorites', jwtValidator, userController.getFavorites);
 
+// Follow User (Ruta protegida con JWT Token) - Seguir a un usuario
+router.post('/:_id/follow', jwtValidator, userController.followUser);
+
+// Unfollow User (Ruta protegida con JWT Token) - Dejar de seguir a un usuario
+router.post('/:_id/unfollow', jwtValidator, userController.unfollowUser);
+
 // Get Following (Ruta protegida con JWT Token) - Obtener lista de usuarios seguidos
 router.get('/me/following', jwtValidator, userController.getFollowing);
 
