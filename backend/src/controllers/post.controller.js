@@ -27,7 +27,8 @@ const deletePost = async (req, res) => {
 const addFavoritePost = async (req, res) => {
   try {
     const { _id } = req.params;
-    const updatedPost = await postService.addFavoritePost(_id);
+    const userId = req.user._id;
+    const updatedPost = await postService.addFavoritePost(_id, userId);
 
     res.status(200).json(updatedPost);
   } catch (err) {
@@ -39,7 +40,8 @@ const addFavoritePost = async (req, res) => {
 const removeFavoritePost = async (req, res) => {
   try {
     const { _id } = req.params;
-    const updatedPost = await postService.removeFavoritePost(_id);
+    const userId = req.user._id;
+    const updatedPost = await postService.removeFavoritePost(_id, userId);
 
     res.status(200).json(updatedPost);
   } catch (err) {
@@ -51,8 +53,9 @@ const removeFavoritePost = async (req, res) => {
 const addCommentPost = async (req, res) => {
   try {
     const { _id } = req.params;
-    const { user, message } = req.body;
-    const updatedPost = await postService.addCommentPost(_id, { user, message });
+    const userId = req.user._id;
+    const { message } = req.body;
+    const updatedPost = await postService.addCommentPost(_id, { userId, message });
 
     res.status(201).json(updatedPost);
   } catch (err) {
@@ -64,8 +67,9 @@ const addCommentPost = async (req, res) => {
 const removeCommentPost = async (req, res) => {
   try {
     const { _id } = req.params;
+    const userId = req.user._id;
     const { commentId } = req.body;
-    const updatedPost = await postService.removeCommentPost(_id, commentId);
+    const updatedPost = await postService.removeCommentPost(_id, userId, commentId);
     
     res.status(200).json(updatedPost);
   } catch (err) {
@@ -77,7 +81,7 @@ const removeCommentPost = async (req, res) => {
 const getPostComments = async (req, res) => {
   try {
     const postId = req.params._id;
-    const comments = await userService.getPostComments(postId);
+    const comments = await postService.getPostComments(postId);
 
     res.status(200).json(comments);
   } catch (err) {

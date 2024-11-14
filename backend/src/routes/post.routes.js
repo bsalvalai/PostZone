@@ -32,7 +32,6 @@ router.delete("/:_id/favorites", jwtValidator, postController.removeFavoritePost
 router.post("/:_id/comments",
   [
     jwtValidator,
-    check("user").not().isEmpty().withMessage("Se requiere el Usuario del Comentario"),
     check("message").not().isEmpty().withMessage("El mensaje de comentario es obligatorio"),
     checkFields
   ],
