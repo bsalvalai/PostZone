@@ -5,16 +5,6 @@ const bcrypt = require('bcrypt');
 
 class sessionService {
 
-  // BORRAR
-  async getAllSessions() {
-    try {
-      return await Session.find({});
-    } catch (err) {
-      console.error("Error en el Servicio getAllSessions: " + err);
-      throw new Error("Error en el Servicio getAllSessions: " + err.message);
-    }
-  }
-
   async login({ email, password }) {
     try {
       let user = await User.findOne({ email });

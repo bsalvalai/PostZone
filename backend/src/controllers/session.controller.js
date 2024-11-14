@@ -1,16 +1,5 @@
 const sessionService = require('../services/session.service.js');
 
-// BORRAR
-const getAllSessions = async (req, res) => {
-  try {
-    const sessions = await sessionService.getAllSessions();
-
-    res.status(200).json(sessions);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;

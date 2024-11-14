@@ -28,7 +28,6 @@ app.use('/sessions', sessionRoutes);
 app.use('/ads', adRoutes);
 app.use('/timeline', timelineRoutes);
 
-
 app.get('/', (req, res) => {
     res.send(`Server running`);
 });
