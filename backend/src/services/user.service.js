@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const Post = require('../models/Post');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const transporter = require('../config/email');
@@ -105,6 +104,38 @@ class userService {
     }
   }
 
+  async updateGamificationLevel(userId) {
+    try {
+      const user = await User.findById(userId);
+
+      if (!user) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+
+      let postCount = user.userPosts.length;  // Obtengo la cantidad de posts a partir del array
+      let commentCount = user.commentCount;
+
+      // Actualizo el nivel de gamificación
+      if (postCount >= 4 && commentCount >= 4) {
+        user.gamificationLevel = 4;
+      } else if (postCount >= 4) {
+        user.gamificationLevel = 3;
+      } else if (postCount >= 2) {
+        user.gamificationLevel = 2;
+      } else {
+        user.gamificationLevel = 1;
+      }
+
+      await user.save();
+
+      return user;
+    } catch (err) {
+      console.error("Error en el Servicio updateGamificationLevel: " + err);
+      throw new Error("Error en el Servicio updateGamificationLevel: " + err.message);
+    }
+  }
+
   async deleteUser(userId) {
     try {
       const deletedUser = await User.findById(userId);
@@ -155,6 +186,7 @@ class userService {
       });
   
       if (!user) {
+        console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
   
@@ -173,6 +205,7 @@ class userService {
       });
   
       if (!user) {
+        console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
   
@@ -191,6 +224,7 @@ class userService {
       });
   
       if (!user) {
+        console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
   
@@ -209,6 +243,7 @@ class userService {
       });
   
       if (!user) {
+        console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
   

@@ -78,6 +78,7 @@ class sessionService {
       const user = await User.findById(decoded.user._id);
 
       if (!user) {
+        console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
 
@@ -95,6 +96,7 @@ class sessionService {
       const session = await Session.findOneAndUpdate({ jwtToken: oldToken }, { jwtToken: newToken }, { new: true });
 
       if (!session) {
+        console.error("Sesión no encontrada para actualizar el token");
         throw new Error("Sesión no encontrada para actualizar el token");
       }
 

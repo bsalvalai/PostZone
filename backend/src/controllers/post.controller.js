@@ -2,8 +2,8 @@ const postService = require('../services/post.service.js');
 
 const createPost = async (req, res) => {
   try {
-    const { user, content, images, location } = req.body;
-    const post = await postService.createPost({ user, content, images, location });
+    const { userId, content, images, location } = req.body;
+    const post = await postService.createPost({ userId, content, images, location });
 
     res.status(201).json(post);
   } catch (err) {
@@ -67,9 +67,8 @@ const addCommentPost = async (req, res) => {
 const removeCommentPost = async (req, res) => {
   try {
     const { _id } = req.params;
-    const userId = req.user._id;
     const { commentId } = req.body;
-    const updatedPost = await postService.removeCommentPost(_id, userId, commentId);
+    const updatedPost = await postService.removeCommentPost(_id, commentId);
     
     res.status(200).json(updatedPost);
   } catch (err) {
