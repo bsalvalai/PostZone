@@ -39,7 +39,6 @@ export default function EditPost() {
     useEffect(()=>{
         if(Location)
             reverseGeocode();
-            console.log("direccion: ", adress)
     },[location])
 
     useEffect(() => {
@@ -88,26 +87,48 @@ export default function EditPost() {
 
     //CREO QUE TIENE QUE SER ASYNC (?)
     const handleAccept = async() => {
-        await uploadImage();
+        await uploadImages();
     }
 
-    const uploadImage = async() => {
-        if(!images){
+    const uploadImages = async () => {
+        if (!imagesUri || imagesUri.length === 0) {
+            Alert.alert("Error", "No hay imágenes para subir");
             return;
         }
-
+    
         const options = {
             upload_preset: 'Default',
             unsigned: true,
+        };
+    
+        try {
+            // Utiliza Promise.all para esperar a que todas las imágenes se suban.
+            const uploadPromises = imagesUri.map(async (uri) => {
+                // Sube cada imagen individualmente.
+                return await upload(cld, {
+                    file: uri, // Usa la URI de la imagen.
+                    options: options,
+                    callback: (error: any, response: any) => {
+                        if (error) {
+                            console.error("Error al subir la imagen:", error);
+                        } else {
+                            console.log("Imagen subida correctamente:", response);
+                            //TENGO QUE GUARDAR EN EL BACK EL response.public_id
+                        }
+                    }
+                });
+            });
+    
+            // Espera a que todas las promesas se resuelvan.
+            const uploadResults = await Promise.all(uploadPromises);
+            console.log("Resultados de las subidas:", uploadResults);
+            Alert.alert("Éxito", "Todas las imágenes se han subido correctamente");
+        } catch (error) {
+            console.error("Error al subir imágenes:", error);
+            Alert.alert("Error", "Ocurrió un problema al subir las imágenes");
         }
-        
-        await upload(cld, {file: 'imageFile.jpg' , 
-            options: options, 
-            callback: (error: any, response: any) => {
-            console.log("error: ", error)
-            console.log("response: ", response)
-            }})
-    }
+    };
+
     return (
         <View style={styles.container}>
             <Stack.Screen options={{
