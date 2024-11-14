@@ -63,7 +63,7 @@ const deleteUser = async (req, res) => {
 const editUser = async (req, res) => {
   try {
     const userId = req.user._id;
-    const allowedFields = ["name", "username", "email", "password", "gender", "profilePicture", "coverPhoto", "bio"];
+    const allowedFields = ["name", "username", "password", "gender", "profilePicture", "coverPhoto", "bio"];
     
     const newData = Object.keys(req.body)
       .filter(key => allowedFields.includes(key))
@@ -71,6 +71,10 @@ const editUser = async (req, res) => {
         obj[key] = req.body[key];
         return obj;
       }, {});
+
+      if (newData.password) {
+        newData.password = await bcrypt.hash(newData.password, 10);
+      }
 
     const editedUser = await userService.editUser(userId, newData);
 

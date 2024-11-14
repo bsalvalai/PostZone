@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   profilePicture: { type: String },
   coverPhoto: { type: String },
+  bio: { type: String },
   commentCount: { type: Number, default: 0 },
   gamificationLevel: { type: Number, default: 1 },
   resetPasswordToken: { type: String },
