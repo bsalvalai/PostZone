@@ -13,6 +13,7 @@ import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Stack } from "expo-router";
 import { GoogleLogo } from "../assets/icons/GoogleLogo";
+import React from "react";
 
 export default function CreateAccount() {
     const colorScheme = useColorScheme();

@@ -46,7 +46,7 @@ export default function ImageSelectorScreen() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
-      quality: 1,
+      quality: 0.5,
       selectionLimit: 4,
     });
 
