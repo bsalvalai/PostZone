@@ -89,7 +89,7 @@ class postService {
       post.likeCount += 1;  // Aumento el contador de likes del post
       await post.save();
 
-      return post;
+      return { message: "La publicación se agregó a favoritos con éxito" };
     } catch (err) {
       console.error("Error en el Servicio addFavoritePost: " + err);
       throw new Error("Error en el Servicio addFavoritePost: " + err.message);
@@ -124,7 +124,7 @@ class postService {
       post.likeCount -= 1;  // Disminuyo el contador de likes del post
       await post.save();
 
-      return post;
+      return { message: "La publicación se eliminó de favoritos con éxito" };
     } catch (err) {
       console.error("Error en el Servicio removeFavoritePost: " + err);
       throw new Error("Error en el Servicio removeFavoritePost: " + err.message);
@@ -165,7 +165,7 @@ class postService {
   
       await userService.updateGamificationLevel(userId);  // Actualizo el nivel de gamificación
 
-      return comment;
+      return { message: "El comentario se agregó a la publicación con éxito" };
     } catch (err) {
       console.error("Error en el Servicio addCommentPost: " + err);
       throw new Error("Error en el Servicio addCommentPost: " + err.message);
@@ -209,7 +209,7 @@ class postService {
   
       await userService.updateGamificationLevel(userId);  // Actualizo el nivel de gamificación
 
-      return deletedComment;
+      return { message: "El comentario se eliminó de la publicación con éxito" };
     } catch (err) {
       console.error("Error en el Servicio removeCommentPost: " + err);
       throw new Error("Error en el Servicio removeCommentPost: " + err.message);
