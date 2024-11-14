@@ -7,6 +7,8 @@ import Colors from "@/constants/Colors";
 import { useLocalSearchParams } from "expo-router";
 import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location';
+import { upload } from "cloudinary-react-native";
+import { cld } from "@/constants/Cloudinary";
 
 type Coordinates = Location.LocationObject | null
 
@@ -14,6 +16,7 @@ export default function EditPost() {
     const [location, setLocation] = useState<Coordinates>(null);
     const [description, onChangeDescription] = useState("")
     const [adress, setAdress] = useState("")
+    const [imagesUri, setImageUri] = useState<string[]>([]);
     const [locationPermission, setLocationPermission] = useState(false)
     const colorScheme = useColorScheme();
     let { images }= useLocalSearchParams();
@@ -29,15 +32,38 @@ export default function EditPost() {
           setLocationPermission(true)
           let currentLocation = await Location.getCurrentPositionAsync({}).then();
           setLocation(currentLocation);
-
         })();
-      }, []);
 
-      useEffect(()=>{
+    }, []);
+
+    useEffect(()=>{
         if(Location)
             reverseGeocode();
             console.log("direccion: ", adress)
-      },[location])
+    },[location])
+
+    useEffect(() => {
+        if (images) {
+            console.log("Recibido en useEffect, images:", images);
+    
+            try {
+                // Analiza el string JSON
+                const parsedImages = JSON.parse(images as string);
+                console.log("Imagenes parseadas:", parsedImages);
+    
+                if (Array.isArray(parsedImages)) {
+                    const uris = parsedImages.map((image: { uri: string }) => image.uri);
+                    console.log("URIs extraídas:", uris);
+                    setImageUri(uris);
+                } else {
+                    console.warn("El formato de 'images' no es un array.");
+                }
+            } catch (error) {
+                console.error("Error al analizar 'images':", error);
+            }
+        }
+    }, [images]);
+
 
     const handleImageUpload = () => { 
         if(!images){
@@ -61,11 +87,27 @@ export default function EditPost() {
     }
 
     //CREO QUE TIENE QUE SER ASYNC (?)
-    const handleAccept = () => {
-        console.log(images)
-        router.replace("/")
+    const handleAccept = async() => {
+        await uploadImage();
     }
 
+    const uploadImage = async() => {
+        if(!images){
+            return;
+        }
+
+        const options = {
+            upload_preset: 'Default',
+            unsigned: true,
+        }
+        
+        await upload(cld, {file: 'imageFile.jpg' , 
+            options: options, 
+            callback: (error: any, response: any) => {
+            console.log("error: ", error)
+            console.log("response: ", response)
+            }})
+    }
     return (
         <View style={styles.container}>
             <Stack.Screen options={{
