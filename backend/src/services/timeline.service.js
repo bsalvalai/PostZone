@@ -1,38 +1,32 @@
 const User = require('../models/User');
 const Post = require('../models/Post');
 
-class TimelineService {
+class timelineService {
 
-  async getTimeline(userId, limit = 20, skip = 0) {
+  async getTimeline(userId, limit = 10, skip = 0) {
     try {
-      // Encuentro el usuario actual y sus usuarios seguidos
-      const user = await User.findById(userId).populate('followingUsers', '_id'); // Popula los IDs de los seguidos
-
-      console.log('User ID:', userId);
+      // Encuentro el usuario actual y obtengo los IDs de los usuarios que sigue
+      const user = await User.findById(userId).populate('followingUsers', '_id');
 
       if (!user) {
-        throw new Error('Usuario no encontrado');
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
       }
 
-      // Extraigo los IDs de los usuarios seguidos
+      // Extraigo los IDs de los usuarios seguidos y el propio userId
       const followedUserIds = user.followingUsers.map(followedUser => followedUser._id);
+      followedUserIds.push(userId);
 
-      // Si el usuario no sigue a nadie, devuelve un array vacío
-      if (followedUserIds.length === 0) {
-        console.log("El usuario no sigue a nadie.");
-        return [];
-      }
-
-      // Obtengo los posts de los usuarios seguidos
+      // Obtengo los posts de los usuarios seguidos y del usuario autenticado
       const posts = await Post.find({ user: { $in: followedUserIds } })
-        .sort({ createdAt: -1 })  // Ordeno los posts por fecha
+        .sort({ createdAt: -1 })  // Ordeno los posts por fecha de creación (descendente)
         .limit(limit)
         .skip(skip)
         .populate({
           path: 'postComments',
           model: 'Comment',
-          options: { sort: { createdAt: -1 } }
-      });
+          options: { sort: { createdAt: -1 } }  // Ordeno los comentarios en cada post
+        });
 
       return posts;
 
@@ -44,4 +38,4 @@ class TimelineService {
   
 }
 
-module.exports = new TimelineService();
+module.exports = new timelineService();
