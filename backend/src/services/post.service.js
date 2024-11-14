@@ -55,7 +55,7 @@ class postService {
       await userService.updateGamificationLevel(userId);  // Actualizo el nivel de gamificación
       const deletedPost = await Post.findByIdAndDelete(postId);
 
-      return deletedPost;
+      return { message: "La publicación se eliminó con éxito" };
     } catch (err) {
       console.error("Error en el Servicio deletePost: " + err);
       throw new Error("Error en el Servicio deletePost: " + err.message);
@@ -165,7 +165,7 @@ class postService {
   
       await userService.updateGamificationLevel(userId);  // Actualizo el nivel de gamificación
 
-      return { message: "El comentario se agregó a la publicación con éxito" };
+      return comment;
     } catch (err) {
       console.error("Error en el Servicio addCommentPost: " + err);
       throw new Error("Error en el Servicio addCommentPost: " + err.message);

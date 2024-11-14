@@ -42,7 +42,6 @@ const refreshToken = async (req, res) => {
 };
 
 module.exports = {
-  getAllSessions,  // BORRAR
   login,
   logout,
   refreshToken
