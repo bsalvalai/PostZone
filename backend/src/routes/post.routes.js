@@ -10,7 +10,6 @@ const router = Router();
 router.post("/",
   [
     jwtValidator,
-    check("userId").not().isEmpty().withMessage("Se requiere el ID del Usuario del Post"),
     check("content").optional(),
     check("images").not().isEmpty().withMessage("Se requieren las imágenes del Post"),
     check("location").optional(),

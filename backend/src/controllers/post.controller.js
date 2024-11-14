@@ -2,7 +2,8 @@ const postService = require('../services/post.service.js');
 
 const createPost = async (req, res) => {
   try {
-    const { userId, content, images, location } = req.body;
+    const { content, images, location } = req.body;
+    const userId = req.user._id;
     const post = await postService.createPost({ userId, content, images, location });
 
     res.status(201).json(post);
