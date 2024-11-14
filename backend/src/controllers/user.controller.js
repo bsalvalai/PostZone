@@ -194,7 +194,6 @@ const getUser = async (req, res) => {
 
 module.exports = {
   createUser,
-  getAllUsers,
   forgotPassword,
   resetPassword,
   getMyUser,
