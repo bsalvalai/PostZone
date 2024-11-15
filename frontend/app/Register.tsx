@@ -7,6 +7,7 @@ import Colors from "@/constants/Colors";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Stack, router } from "expo-router"
+import React from "react";
 
 export default function Register() {
     const colorScheme = useColorScheme();

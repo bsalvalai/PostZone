@@ -4,6 +4,7 @@ import { StyleSheet, TextInput, useColorScheme, Dimensions } from "react-native"
 import Colors from "@/constants/Colors";
 import { useEffect, useState } from "react";
 import { TabSearch } from "@/assets/icons/TabSearch";
+import React from "react";
 
 export default function SearchScreen() {
   const colorScheme = useColorScheme();

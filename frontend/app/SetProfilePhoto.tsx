@@ -10,6 +10,7 @@ import { Stack, useLocalSearchParams } from "expo-router"
 import * as ImagePicker from "expo-image-picker"
 
 import defaultIcon from "@/assets/images/default_icon.png"
+import React from "react";
 
 export default function SetProfilePhoto() {
     const { mail, password } = useLocalSearchParams();

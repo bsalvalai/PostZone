@@ -7,6 +7,8 @@ import Colors from "@/constants/Colors";
 import { useLocalSearchParams } from "expo-router";
 import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location';
+import { upload } from "cloudinary-react-native";
+import { cld } from "@/constants/Cloudinary";
 
 type Coordinates = Location.LocationObject | null
 
@@ -14,6 +16,7 @@ export default function EditPost() {
     const [location, setLocation] = useState<Coordinates>(null);
     const [description, onChangeDescription] = useState("")
     const [adress, setAdress] = useState("")
+    const [imagesUri, setImageUri] = useState<string[]>([]);
     const [locationPermission, setLocationPermission] = useState(false)
     const colorScheme = useColorScheme();
     let { images }= useLocalSearchParams();
@@ -47,6 +50,28 @@ export default function EditPost() {
         }
     }
 
+    useEffect(() => {
+        if (images) {
+            console.log("Recibido en useEffect, images:", images);
+    
+            try {
+                // Analiza el string JSON
+                const parsedImages = JSON.parse(images as string);
+                console.log("Imagenes parseadas:", parsedImages);
+    
+                if (Array.isArray(parsedImages)) {
+                    const uris = parsedImages.map((image: { uri: string }) => image.uri);
+                    console.log("URIs extraídas:", uris);
+                    setImageUri(uris);
+                } else {
+                    console.warn("El formato de 'images' no es un array.");
+                }
+            } catch (error) {
+                console.error("Error al analizar 'images':", error);
+            }
+        }
+    }, [images]);
+
     const reverseGeocode = async () => {
         
         if(location?.coords.latitude !== undefined && location?.coords.longitude !== undefined){
@@ -61,10 +86,49 @@ export default function EditPost() {
     }
 
     //CREO QUE TIENE QUE SER ASYNC (?)
-    const handleAccept = () => {
-        console.log(images)
-        router.replace("/")
+    const handleAccept = async() => {
+        await uploadImages();
     }
+
+    const uploadImages = async () => {
+        if (!imagesUri || imagesUri.length === 0) {
+            Alert.alert("Error", "No hay imágenes para subir");
+            return;
+        }
+    
+        const options = {
+            upload_preset: 'Default',
+            unsigned: true,
+        };
+    
+        try {
+            // Utiliza Promise.all para esperar a que todas las imágenes se suban.
+            const uploadPromises = imagesUri.map(async (uri) => {
+                // Sube cada imagen individualmente.
+                return await upload(cld, {
+                    file: uri, // Usa la URI de la imagen.
+                    options: options,
+                    callback: (error: any, response: any) => {
+                        if (error) {
+                            console.error("Error al subir la imagen:", error);
+                        } else {
+                            console.log("Imagen subida correctamente:", response);
+                            //TENGO QUE GUARDAR EN EL BACK EL response.public_id
+                        }
+                    }
+                });
+            });
+    
+            // Espera a que todas las promesas se resuelvan.
+            const uploadResults = await Promise.all(uploadPromises);
+            console.log("Resultados de las subidas:", uploadResults);
+            Alert.alert("Éxito", "Todas las imágenes se han subido correctamente");
+        } catch (error) {
+            console.error("Error al subir imágenes:", error);
+            Alert.alert("Error", "Ocurrió un problema al subir las imágenes");
+        }
+    };
+
 
     return (
         <View style={styles.container}>

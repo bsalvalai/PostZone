@@ -26,6 +26,7 @@ export default function TabLayout() {
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
+        headerBackButtonDisplayMode: "minimal",
         headerStyle: Platform.select({ 
           ios: {
             backgroundColor: Colors[colorScheme ?? "light"].background,
