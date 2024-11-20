@@ -15,7 +15,7 @@ import { cld } from "@/constants/Cloudinary";
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
 
-
+  //FALTARIA IMPLEMENTAR TIMELINE INTEGRADO CON BACK
 
   const { width } = Dimensions.get("screen")
 

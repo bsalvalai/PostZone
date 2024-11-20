@@ -13,13 +13,18 @@ import defaultIcon from "@/assets/images/default_icon.png"
 import React from "react";
 
 export default function SetProfilePhoto() {
-    const { mail, password } = useLocalSearchParams();
+    let { firstName, lastName, mail, password, username, gender} = useLocalSearchParams();
     const colorScheme = useColorScheme();
     const [image, setImage] = useState("")
     const { width } = Dimensions.get("screen");
 
+
+    console.log("nombre: ", firstName)
+    console.log("apellido: ", lastName)
     console.log("mail: ", mail)
     console.log("password", password)
+    console.log("username: ", username)
+    console.log("gender: ", gender) 
     const handleChooser = async() =>{
         Alert.alert("Tipo de foto","Seleccione si quiere sacar una foto con su camara o elegir de la galeria",[
             {text: "Camara", onPress:() => handleCamera() },
@@ -55,7 +60,7 @@ export default function SetProfilePhoto() {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            quality: 1,
+            quality: 0.5,
         })
         
         if (!result.canceled && result.assets[0]) {
@@ -73,6 +78,7 @@ export default function SetProfilePhoto() {
     }
 
     const handleNext = () => {
+        //MANEJAR EL TEMA DE QUE HAYA O NO IMAGEN. QUIZAS SE PUEDE AGREGAR COMO UN ASSET EN EL CLOUDINARY
         if(!image){
             setImage("")
         }

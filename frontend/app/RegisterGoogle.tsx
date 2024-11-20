@@ -19,7 +19,7 @@ export default function RegisterGoogle() {
 
 
     const handleNext = () => {
-        //HABRIA QUE VERIFICAR LOS MAILS, PASSWORDS Y USERNAME
+        //HABRIA QUE VERIFICAR LOS MAILS, PASSWORDS Y USERNAME CON EL BACK
         router.push({
             pathname: "/SetProfilePhoto",
             params: {mail, password, username, gender},

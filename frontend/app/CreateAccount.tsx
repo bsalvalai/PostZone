@@ -30,6 +30,8 @@ export default function CreateAccount() {
         pathname: "/RegisterGoogle"
       })
     }
+
+    
     return (
     <View style={styles.container}>
         <Stack.Screen 
@@ -49,11 +51,11 @@ export default function CreateAccount() {
             <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Registrarse con E-Mail</Text>
         </TouchableOpacity>
         
-        <Link href="/Login" asChild>
-            <TouchableOpacity>
-                <Text style={{marginTop: 20}}>Ya tienes una cuenta? Inicia sesion aqui</Text>
-            </TouchableOpacity>
-        </Link>
+       
+        <TouchableOpacity onPress={()=>router.back()}>
+            <Text style={{marginTop: 20}}>Ya tienes una cuenta? Inicia sesion aqui</Text>
+        </TouchableOpacity>
+        
     </View>
     )
 }

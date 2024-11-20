@@ -11,6 +11,8 @@ import React from "react";
 
 export default function Register() {
     const colorScheme = useColorScheme();
+    const [firstName, onChangeFirstName] = useState("")
+    const [lastName, onChangeLastName] = useState("")
     const [mail, onChangeMail] = useState("")
     const [password, onChangePassword] = useState("")
     const [repeatPassword, onChangeRepeatPassword] = useState("")
@@ -19,14 +21,15 @@ export default function Register() {
 
 
     const handleNext = () => {
-        if(!mail || !password || !repeatPassword || !username || !gender){
+        if(!firstName || !lastName || !mail || !password || !repeatPassword || !username || !gender){
             Alert.alert("Error","No se completaron todos los campos")
             
         }
         //HABRIA QUE VERIFICAR LOS MAILS, PASSWORDS Y USERNAME CON EL BACK
+        //El password habria que chequearlo con el repeat password
         router.push({
             pathname: "/SetProfilePhoto",
-            params: {mail, password, username, gender},
+            params: {firstName, lastName, mail, password, username, gender},
         })
     }
     return (
@@ -40,6 +43,21 @@ export default function Register() {
                     <Text style={[styles.title, { color: Colors[colorScheme ?? "light"].text }]}>
                         Crear Cuenta
                     </Text>
+                    <TextInput
+                        style={[styles.input, { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, { color: Colors[colorScheme ?? "light"].text }]}
+                        value={firstName}
+                        onChangeText={onChangeFirstName}
+                        placeholder="Ingrese su nombre"
+                        placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
+                    />
+
+                    <TextInput 
+                        style={[styles.input, { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, { color: Colors[colorScheme ?? "light"].text }]}
+                        value={lastName}
+                        onChangeText={onChangeLastName}
+                        placeholder="Ingrese su apellido"
+                        placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
+                    />
                     <TextInput
                         style={[styles.input, { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, { color: Colors[colorScheme ?? "light"].text }]}
                         value={mail}
@@ -99,7 +117,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
-    marginTop: 90,
+    marginTop: 50,
   },
   input: {
     borderRadius: 20,

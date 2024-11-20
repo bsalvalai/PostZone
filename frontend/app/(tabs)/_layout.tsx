@@ -73,6 +73,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="search"
         options={{
@@ -112,6 +113,7 @@ export default function TabLayout() {
           ),
         }}
       />
+      
     </Tabs>
   );
 }

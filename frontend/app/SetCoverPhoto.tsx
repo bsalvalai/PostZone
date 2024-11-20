@@ -13,11 +13,13 @@ import React from "react";
 
 
 export default function SetCoverPhoto() {
-    const { mail, password} = useLocalSearchParams();
+    let {firstName, lastName, mail, password, username, gender} = useLocalSearchParams();
     const colorScheme = useColorScheme();
     const [image, setImage] = useState<ImagePicker.ImagePickerAsset>() || undefined;
     const { width } = Dimensions.get("screen");
 
+
+    
     const handleChooser = async() =>{
         Alert.alert("Tipo de foto","Seleccione si quiere sacar una foto con su camara o elegir de la galeria",[
             {text: "Camara", onPress:() => handleCamera() },
@@ -25,6 +27,8 @@ export default function SetCoverPhoto() {
             {text: "Cancelar"},
         ])
     }
+
+    //CUANDO SE SELECCIONE SIGUIENTE Y NO HAYA SELECCIONADO UNA FOTO DE PORTADA, SE PODRIA USAR UN ASSET DEL CLOUDINARY, COMO SE PLANTEA EN SETPROFILEPHOTO
 
     const handleCamera = async() => {
         try{

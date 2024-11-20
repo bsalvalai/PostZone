@@ -15,10 +15,13 @@ export default function Login() {
     const [password, onChangePassword] = useState("")
     
     const handleLogin = () =>{
-        //VALIDAR LA CUENTA
+
         if(!mail || !password){
-            alert("ERROR TE OLVIDASTE DE LLENAR TODO")
+            alert("Te olvidase de llenar los campos")
         }
+
+        //FALTA VALIDAR LA CUENTA Y CREAR LA SESION
+
     }
 
     return (
@@ -49,19 +52,23 @@ export default function Login() {
         placeholder="Ingrese su contraseña"
         placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
         </TextInput>
+
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Log In</Text>
         </TouchableOpacity>
+
         <Link href="/CreateAccount" asChild>
             <TouchableOpacity>
                 <Text style={{marginTop: 20}}>No tienes una cuenta? Registrate aqui</Text>
             </TouchableOpacity>
         </Link>
+
         <Link href="/RecoverMail" asChild>
             <TouchableOpacity>
                 <Text style={{marginTop: 40}}>Olvidaste tu contraseña? Presione aqui</Text>
             </TouchableOpacity>
         </Link>
+        
     </View>
     
 );

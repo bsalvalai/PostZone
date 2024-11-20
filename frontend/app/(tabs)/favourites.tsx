@@ -1,8 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { Text, View } from "@/components/Themed";
+import React from "react";
 import { StyleSheet } from "react-native";
 
 export default function FavouritesScreen() {
+
+  //TRAER LOS POSTEOS FAVORITOS
+
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Esta es la pagina de Favoritos</Text>

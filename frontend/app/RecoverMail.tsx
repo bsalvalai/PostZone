@@ -19,12 +19,18 @@ export default function MailRecover(){
   const colorScheme = useColorScheme();
   const [mail, onChangeMail] = useState("")
 
+
   const handleMailSender = () => {
     router.push({
       pathname: "/RecoverPassword",
       params: {mail}
     })
+
+    //MANEJAR LA LOGICA PARA MANDAR EL MAIL DESDE EL BACK
+
+    
   }
+
   return (
     <View style={styles.container}>
       <Stack.Screen
