@@ -18,6 +18,23 @@ class userService {
       const user = new User({ name, username, email, password: hashedPassword, gender, profilePicture, coverPhoto });
       await user.save();
       
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: '¡Gracias por registrarte! - PostZone',
+        html: `
+        <html>
+          <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+              <h2 style="color: #007BFF;">Cuenta creada - PostZone</h2>
+              <p>Muchas gracias por registrarte en PostZone. Ahora puedes disfrutar interactuando con tus amigos y creando publicaciones.</p>
+            </div>
+          </body>
+        </html>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
       return user;
     } catch (err) {
       console.error("Error en el Servicio createUser: " + err);
