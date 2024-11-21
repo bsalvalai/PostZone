@@ -78,7 +78,7 @@ export default function SetProfilePhoto() {
     }
 
     const handleNext = () => {
-        //MANEJAR EL TEMA DE QUE HAYA O NO IMAGEN. QUIZAS SE PUEDE AGREGAR COMO UN ASSET EN EL CLOUDINARY
+        //MANEJAR EL TEMA DE QUE HAYA O NO IMAGEN. QUIZAS SE PUEDE AGREGAR COMO UN ASSET EN el cloudinary
         if(!image){
             setImage("")
         }
