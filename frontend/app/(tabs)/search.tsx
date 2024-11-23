@@ -3,13 +3,17 @@ import { Text, View } from "../../components/Themed";
 import { StyleSheet, TextInput, useColorScheme, Dimensions } from "react-native";
 import Colors from "../../constants/Colors";
 import { useEffect, useState } from "react";
-import { TabSearch } from "../../assets/icons/TabSearch";
+import { TabSearch } from "@/assets/icons/TabSearch";
+import React from "react";
 
 export default function SearchScreen() {
   const colorScheme = useColorScheme();
   const [text, onChangeText] = useState("")
   const { height } = Dimensions.get("window")
 
+  //AGREGAR UN HANDLE Y UNA OPCION PARA PRESIONAR LA LUPITA Y QUE BUSQUE AL USUARIO.
+
+  
   return (
     <View style={styles.container}>
       <View style={styles.searchBar}> 

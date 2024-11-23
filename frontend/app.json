@@ -2,6 +2,7 @@
   "expo": {
     "name": "PostZone",
     "slug": "PostZone",
+    "newArchEnabled": true,
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,21 +13,21 @@
       "resizeMode": "contain",
       "backgroundColor": "#115E85",
       "dark": {
-        "image":"./assets/images/splash.png",
-        "resizeMode":"contain",
+        "image": "./assets/images/splash.png",
+        "resizeMode": "contain",
         "backgroundColor": "#2f2f2f"
       }
     },
     "ios": {
       "supportsTablet": true,
       "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#115E85",
-      "dark": {
-        "image":"./assets/images/splash.png",
-        "resizeMode":"contain",
-        "backgroundColor": "#2f2f2f"
+        "image": "./assets/images/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#115E85",
+        "dark": {
+          "image": "./assets/images/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#2f2f2f"
         }
       }
     },
@@ -36,15 +37,16 @@
         "backgroundColor": "#ffffff"
       },
       "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#115E85",
-      "dark": {
-        "image":"./assets/images/splash.png",
-        "resizeMode":"contain",
-        "backgroundColor": "#2f2f2f"
+        "image": "./assets/images/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#115E85",
+        "dark": {
+          "image": "./assets/images/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#2f2f2f"
         }
-      }
+      },
+      "package": "com.bautisalvalai.PostZone"
     },
     "web": {
       "bundler": "metro",
@@ -56,6 +58,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0b7701e2-212c-4f62-85b1-8e7cfe1aed83"
+      }
     }
   }
 }

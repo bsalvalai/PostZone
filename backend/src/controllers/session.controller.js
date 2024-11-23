@@ -1,15 +1,5 @@
 const sessionService = require('../services/session.service.js');
 
-// BORRAR
-const getAllSessions = async (req, res) => {
-  try {
-    const sessions = await sessionService.getAllSessions();
-    res.status(200).json(sessions);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -27,9 +17,10 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const token = req.token;  // Token para identificar la sesión a eliminar
+    const token = req.token;
     await sessionService.logout(token);
     res.status(204).json({ message: 'Sesión finalizada exitosamente' });
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -51,7 +42,6 @@ const refreshToken = async (req, res) => {
 };
 
 module.exports = {
-  getAllSessions,  // BORRAR
   login,
   logout,
   refreshToken

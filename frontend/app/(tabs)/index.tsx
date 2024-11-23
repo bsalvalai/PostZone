@@ -1,16 +1,34 @@
 /* eslint-disable prettier/prettier */
-import { StyleSheet, useColorScheme } from "react-native";
+import { Dimensions, Pressable, StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
 
-import EditScreenInfo from "../../components/EditScreenInfo";
-import { Text, View } from "../../components/Themed";
-import Colors  from "../../constants/Colors";
+import EditScreenInfo from "@/components/EditScreenInfo";
+import { Text, View } from "@/components/Themed";
+import Colors  from "@/constants/Colors";
+import { Link } from "expo-router";
+import React from "react";
+import { AdvancedImage } from "cloudinary-react-native"
+import { Cloudinary } from "@cloudinary/url-gen";
+import { cld } from "@/constants/Cloudinary";
+
+
+
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
+
+  //FALTARIA IMPLEMENTAR TIMELINE INTEGRADO CON BACK
+
+  const { width } = Dimensions.get("screen")
+
+  const myImage = cld.image("sample");
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Esta es la pagina Inicio</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="#ADADAD" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <Link href="/Login" asChild>
+        <Pressable> 
+          <Text>IR A LOGIN</Text>
+        </Pressable>
+      </Link>
     </View>
   );
 }

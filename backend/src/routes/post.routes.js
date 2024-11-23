@@ -10,7 +10,6 @@ const router = Router();
 router.post("/",
   [
     jwtValidator,
-    check("user").not().isEmpty().withMessage("Se requiere el Usuario del Post"),
     check("content").optional(),
     check("images").not().isEmpty().withMessage("Se requieren las imágenes del Post"),
     check("location").optional(),
@@ -32,7 +31,6 @@ router.delete("/:_id/favorites", jwtValidator, postController.removeFavoritePost
 router.post("/:_id/comments",
   [
     jwtValidator,
-    check("user").not().isEmpty().withMessage("Se requiere el Usuario del Comentario"),
     check("message").not().isEmpty().withMessage("El mensaje de comentario es obligatorio"),
     checkFields
   ],
@@ -48,5 +46,8 @@ router.delete("/:_id/comments",
   ],
   postController.removeCommentPost
 );
+
+// Get Post Comments (Ruta protegida con JWT Token) - Obtener lista de comentarios de la publicación
+router.get('/:_id/comments', jwtValidator, postController.getPostComments);
 
 module.exports = router;

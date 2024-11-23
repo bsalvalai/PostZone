@@ -18,6 +18,23 @@ class userService {
       const user = new User({ name, username, email, password: hashedPassword, gender, profilePicture, coverPhoto });
       await user.save();
       
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: '¡Gracias por registrarte! - PostZone',
+        html: `
+        <html>
+          <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+              <h2 style="color: #007BFF;">Cuenta creada - PostZone</h2>
+              <p>Muchas gracias por registrarte en PostZone. Ahora puedes disfrutar interactuando con tus amigos y creando publicaciones.</p>
+            </div>
+          </body>
+        </html>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
       return user;
     } catch (err) {
       console.error("Error en el Servicio createUser: " + err);
@@ -25,19 +42,11 @@ class userService {
     }
   }
 
-  async getAllUsers() {
-    try {
-      return await User.find({});
-    } catch (err) {
-      console.error("Error en el Servicio getAllUsers: " + err);
-      throw new Error("Error en el Servicio getAllUsers: " + err.message);
-    }
-  }
-
   async forgotPassword(email) {
     try {
       const user = await User.findOne({ email });
       if (!user) {
+        console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
 
@@ -87,6 +96,7 @@ class userService {
       });
 
       if (!user) {
+        console.error("Token inválido o expirado");
         throw new Error("Token inválido o expirado");
       }
 
@@ -101,6 +111,55 @@ class userService {
     } catch (err) {
       console.error("Error en el Servicio resetPassword: " + err);
       throw new Error("Error en el Servicio resetPassword: " + err.message);
+    }
+  }
+
+  async updateGamificationLevel(userId) {
+    try {
+      const user = await User.findById(userId);
+
+      if (!user) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+
+      let postCount = user.userPosts.length;  // Obtengo la cantidad de posts a partir del array
+      let commentCount = user.commentCount;
+
+      // Verifico el nivel de gamificación
+      if (postCount >= 4 && commentCount >= 4) {
+        user.gamificationLevel = 4;
+      } else if (postCount >= 4) {
+        user.gamificationLevel = 3;
+      } else if (postCount >= 2) {
+        user.gamificationLevel = 2;
+      } else {
+        user.gamificationLevel = 1;
+      }
+
+      await user.save();
+
+      return user;
+    } catch (err) {
+      console.error("Error en el Servicio updateGamificationLevel: " + err);
+      throw new Error("Error en el Servicio updateGamificationLevel: " + err.message);
+    }
+  }
+
+  async deleteUser(userId) {
+    try {
+      const deletedUser = await User.findById(userId);
+      if (!deletedUser) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+
+      await User.findByIdAndDelete(userId);
+
+      return deletedUser;
+    } catch (err) {
+      console.error("Error en el Servicio deleteUser: " +  err);
+      throw new Error("Error en el Servicio deleteUser: " + err.message);
     }
   }
 
@@ -129,20 +188,147 @@ class userService {
     }
   }
 
-  async deleteUser(_id) {
+  async getUserPosts(userId) {
     try {
-      const deletedUser = await User.findById(_id);
-      if (!deletedUser) {
+      const user = await User.findById(userId).populate({
+        path: 'userPosts',
+        model: 'Post'
+      });
+  
+      if (!user) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+  
+      return user.userPosts;
+    } catch (err) {
+      console.error("Error en el Servicio getUserPosts: " + err);
+      throw new Error("Error en el Servicio getUserPosts: " + err.message);
+    }
+  }
+
+  async getFavorites(userId) {
+    try {
+      const user = await User.findById(userId).populate({
+        path: 'favoritePosts',
+        model: 'Post'
+      });
+  
+      if (!user) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+  
+      return user.favoritePosts;
+    } catch (err) {
+      console.error("Error en el Servicio getFavorites: " + err);
+      throw new Error("Error en el Servicio getFavorites: " + err.message);
+    }
+  }
+
+  async followUser(userId, targetUserId) {
+    try {
+      if (userId === targetUserId) {
+        console.error("Un usuario no puede seguirse a sí mismo");
+        throw new Error("Un usuario no puede seguirse a sí mismo");
+      }
+
+      const user = await User.findById(userId);
+      const targetUser = await User.findById(targetUserId);
+
+      if (!user || !targetUser) {
         console.error("Usuario no encontrado");
         throw new Error("Usuario no encontrado");
       }
 
-      await User.findByIdAndDelete(_id);
+      // Verifico si ya está siguiendo al usuario objetivo
+      if (user.followingUsers.includes(targetUserId)) {
+        console.error("Ya sigues a este usuario");
+        throw new Error("Ya sigues a este usuario");
+      }
 
-      return deletedUser;
+      // Agrego a following del usuario autenticado y a followers del usuario objetivo
+      user.followingUsers.push(targetUserId);
+      targetUser.followerUsers.push(userId);
+
+      await user.save();
+      await targetUser.save();
+
+      return { message: "Empezaste a seguir al usuario con éxito" };
     } catch (err) {
-      console.error("Error en el Servicio deleteUser: " +  err);
-      throw new Error("Error en el Servicio deleteUser: " + err.message);
+      console.error("Error en el Servicio followUser: " + err);
+      throw new Error("Error en el Servicio followUser: " + err.message);
+    }
+  }
+
+  async unfollowUser(userId, targetUserId) {
+    try {
+      const user = await User.findById(userId);
+      const targetUser = await User.findById(targetUserId);
+
+      if (!user || !targetUser) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+
+      // Verifico si realmente está siguiendo al usuario objetivo
+      const followingIndex = user.followingUsers.indexOf(targetUserId);
+      const followerIndex = targetUser.followerUsers.indexOf(userId);
+
+      if (followingIndex === -1 || followerIndex === -1) {
+        console.error("No estás siguiendo a este usuario");
+        throw new Error("No estás siguiendo a este usuario");
+      }
+
+      // Elimino del array following del usuario autenticado y del array followers del usuario objetivo
+      user.followingUsers.splice(followingIndex, 1);
+      targetUser.followerUsers.splice(followerIndex, 1);
+
+      await user.save();
+      await targetUser.save();
+
+      return { message: "Dejaste de seguir al usuario con éxito" };
+    } catch (err) {
+      console.error("Error en el Servicio unfollowUser: " + err);
+      throw new Error("Error en el Servicio unfollowUser: " + err.message);
+    }
+  }
+  
+  async getFollowing(userId) {
+    try {
+      const user = await User.findById(userId).populate({
+        path: 'followingUsers',
+        model: 'User'
+      });
+  
+      if (!user) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+  
+      return user.followingUsers;
+    } catch (err) {
+      console.error("Error en el Servicio getFollowing: " + err);
+      throw new Error("Error en el Servicio getFollowing: " + err.message);
+    }
+  }
+  
+  async getFollowers(userId) {
+    try {
+      const user = await User.findById(userId).populate({
+        path: 'followerUsers',
+        model: 'User'
+      });
+  
+      if (!user) {
+        console.error("Usuario no encontrado");
+        throw new Error("Usuario no encontrado");
+      }
+  
+      return user.followerUsers;
+    } catch (err) {
+      console.error("Error en el Servicio getFollowers: " + err);
+      throw new Error("Error en el Servicio getFollowers: " + err.message);
     }
   }
 
@@ -150,7 +336,7 @@ class userService {
     try {
       // Uso expresión regular para coincidencia parcial en username (insensible a mayúsculas)
       const regex = new RegExp(username, 'i');
-      return await User.find({ username: regex }).sort({ username: 1 }); // Ordeno alfabéticamente por username
+      return await User.find({ username: regex }).sort({ username: 1 });  // Ordeno alfabéticamente por username
     } catch (err) {
       console.error("Error en el Servicio searchUsersByUsername: " + err);
       throw new Error("Error en el Servicio searchUsersByUsername: " + err.message);

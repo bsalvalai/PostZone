@@ -15,6 +15,7 @@ import { useColorScheme } from "../components/useColorScheme";
 import Colors from "../constants/Colors";
 import { useClientOnlyValue } from "../components/useClientOnlyValue";
 import { View } from "react-native";
+import React from "react";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -63,7 +64,7 @@ function RootLayoutNav() {
         headerStyle: [{backgroundColor: Colors[colorScheme ?? "light"].background}],
         headerLargeTitleShadowVisible: true,
         headerTitleAlign: "center",
-        headerBackTitleVisible: false,
+        headerBackButtonDisplayMode: "minimal",
         headerShadowVisible: false,
       }}>
         <Stack.Screen name="(tabs)" options={{headerShown: false}}  />

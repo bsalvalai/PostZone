@@ -1,13 +1,12 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, Image, StyleSheet, Dimensions, TouchableOpacity, ScrollView, useColorScheme, Pressable } from "react-native";
+import { View, Text, Button, Image, StyleSheet, Dimensions, TouchableOpacity, ScrollView, useColorScheme, Pressable, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import PagerView from "react-native-pager-view";
-import Colors from "../../constants/Colors";
-import { Link, router, Stack } from "expo-router";
+import Colors from "@/constants/Colors";
+import { Link, router, Stack, useNavigation } from "expo-router";
 import { Reject } from "../../assets/icons/Reject";
 import { Confirmation } from "../../assets/icons/Confirm"
-import { Router } from "expo-router";
 
 export default function ImageSelectorScreen() {
   const [images, setImages] = useState<ImagePicker.ImagePickerAsset[]>([]);
@@ -15,15 +14,39 @@ export default function ImageSelectorScreen() {
   const { width } = Dimensions.get("screen");
   const colorScheme = useColorScheme();
 
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        images.length > 0 ? (
+          <Pressable onPress={emptyImages} style={styles.headerButtons}>
+            <Reject color={Colors[colorScheme ?? "light"].text} />
+          </Pressable>
+        ) : null
+      ),
+      headerRight: () => (
+        images.length > 0 ? (
+          <Pressable style={styles.headerButtons} onPress={() => router.push({
+            pathname: "/EditPost",
+            params: { images: JSON.stringify(images) }
+          })}>
+            <Confirmation color={Colors[colorScheme ?? "light"].text} />
+          </Pressable>
+        ) : null
+      ),
+    });
+  }, [images]);
 
   const pickImages = async () => {
     if(images.length > 0){
-      emptyImages
+      emptyImages();
     }
+    //await ImagePicker.requestMediaLibraryPermissionsAsync DESPUES PRUEBO Y VEO QUE ONDA
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
-      quality: 1,
+      quality: 0.5,
       selectionLimit: 4,
     });
 
@@ -31,15 +54,14 @@ export default function ImageSelectorScreen() {
       console.log(result.assets);
       setImages(result.assets);
       setSelectedIndex(0); // Empezar desde la primera imagen en el carrusel
+    } else {
+      Alert.alert("Error", "No seleccionaste ninguna imagen")
     }
   };
 
-  
-
   const emptyImages = () => {
-    if(images.length > 0)
-      setImages([]);
-      setSelectedIndex(0);
+    setImages([]);
+    setSelectedIndex(0);
   };
 
 
@@ -58,22 +80,6 @@ export default function ImageSelectorScreen() {
               </View>
             ))}
           </PagerView>
-          <Stack.Screen options={{
-            headerLeft: () => (
-              <Pressable onPress={emptyImages} style={styles.headerButtons}>
-                <Reject color={Colors[colorScheme ?? "light"].text} />
-              </Pressable>
-            ),
-            headerRight: () => (
-              <Pressable style={styles.headerButtons} onPress={()=> router.push({
-                pathname: "/EditPost",
-                params: { images: JSON.stringify(images), }
-              })}> 
-                <Confirmation color={Colors[colorScheme ?? "light"].text} />
-              </Pressable>
-              
-            ),
-          }}/>
         </>
       )}
       

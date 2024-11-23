@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const sessionSchema = new mongoose.Schema({
-  jwt: { type: String, required: true },
+  jwtToken: { type: String, required: true },
+  refreshToken: { type: String, default: null },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  secondsUntilTokenExpiration: { type: Number, required: true }
+  tokenDuration: { type: Number, required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Session', sessionSchema);

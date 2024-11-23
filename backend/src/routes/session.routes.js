@@ -6,9 +6,6 @@ const checkFields = require("../middlewares/validateFields");
 
 const router = Router();
 
-// BORRAR
-router.get('/', sessionController.getAllSessions);
-
 // Login (Ruta pública) - Iniciar sesión
 router.post('/',
   [

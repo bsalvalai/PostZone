@@ -12,17 +12,6 @@ const createUser = async (req, res) => {
   }
 };
 
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await userService.getAllUsers();
-
-    res.status(200).json(users);
-  } catch (err) {
-    console.error("Error en el Controlador getAllUsers: " + err);
-    res.status(500).json({ error: err.message });
-  }
-};
-
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -50,7 +39,7 @@ const resetPassword = async (req, res) => {
 const getMyUser = async (req, res) => {
   try {
     const userId = req.user._id;
-    const user = await userService.editUser(userId);
+    const user = await userService.getUserById(userId);
 
     res.status(200).json(user);
   } catch (err) {
@@ -74,7 +63,7 @@ const deleteUser = async (req, res) => {
 const editUser = async (req, res) => {
   try {
     const userId = req.user._id;
-    const allowedFields = ["name", "username", "email", "password", "gender", "profilePicture", "coverPhoto", "bio"];
+    const allowedFields = ["name", "username", "password", "gender", "profilePicture", "coverPhoto", "bio"];
     
     const newData = Object.keys(req.body)
       .filter(key => allowedFields.includes(key))
@@ -82,6 +71,10 @@ const editUser = async (req, res) => {
         obj[key] = req.body[key];
         return obj;
       }, {});
+
+      if (newData.password) {
+        newData.password = await bcrypt.hash(newData.password, 10);
+      }
 
     const editedUser = await userService.editUser(userId, newData);
 
@@ -92,18 +85,79 @@ const editUser = async (req, res) => {
   }
 };
 
+const getUserPosts = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const userPosts = await userService.getUserPosts(userId);
+
+    res.status(200).json(userPosts);
+  } catch (err) {
+    console.error("Error en el Controlador getUserPosts: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const getFavorites = async (req, res) => {
-  // COMPLETAR
-}
+  try {
+    const userId = req.user._id;
+    const favorites = await userService.getFavorites(userId);
+
+    res.status(200).json(favorites);
+  } catch (err) {
+    console.error("Error en el Controlador getFavorites: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const followUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { _id: targetUserId } = req.params;
+    const result = await userService.followUser(userId, targetUserId);
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Error en el Controlador followUser: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const unfollowUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { _id: targetUserId } = req.params;
+    const result = await userService.unfollowUser(userId, targetUserId);
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Error en el Controlador unfollowUser: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const getFollowing = async (req, res) => {
-  // COMPLETAR
-}
+  try {
+    const userId = req.user._id;
+    const following = await userService.getFollowing(userId);
+
+    res.status(200).json(following);
+  } catch (err) {
+    console.error("Error en el Controlador getFollowing: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const getFollowers = async (req, res) => {
-  // COMPLETAR
-}
+  try {
+    const userId = req.user._id;
+    const followers = await userService.getFollowers(userId);
+
+    res.status(200).json(followers);
+  } catch (err) {
+    console.error("Error en el Controlador getFollowers: " + err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const searchUser = async (req, res) => {
   try {
@@ -144,13 +198,15 @@ const getUser = async (req, res) => {
 
 module.exports = {
   createUser,
-  getAllUsers,
   forgotPassword,
   resetPassword,
   getMyUser,
   deleteUser,
   editUser,
+  getUserPosts,
   getFavorites,
+  followUser,
+  unfollowUser,
   getFollowing,
   getFollowers,
   searchUser,

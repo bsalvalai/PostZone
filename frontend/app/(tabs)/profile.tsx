@@ -3,21 +3,38 @@ import { StyleSheet, Image, Dimensions } from "react-native";
 import { Text, View } from "../../components/Themed";
 import Colors from "../../constants/Colors";
 import { useColorScheme } from "react-native";
-import { green } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
-
+//import { green } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
+import React, { useEffect } from "react";
+import { Configuration } from "../../assets/icons/Configuration"
+import { useNavigation } from "expo-router";
 
 export default function ProfileScreen() {
   const colorScheme = useColorScheme();
   const { width } = Dimensions.get("screen");
-  const height = (width * 182) / 390;
+  const height = width/2
   const profileImageSize = width * 0.35;
+
+  //Habria que hacer una configuracion para los colores de los generos y los colores de la gamificacion
+  //Que se pase un enum en donde, dependiendo del nivel de gamificacion, te agarre el color correspondiente 
+  //NIVEL 1: "#36D13B"
+  //NIVEL 2: "#352FDE"
+  //NIVEL 3: "#C72FDE"
+  //NIVEL 4: "#CD4D4F"
+
+  
+  useEffect(()=>{
+    //Deberia conseguir el token y hacer la llamada al axios desde aca.
+
+  },[])
+  
+
   return (
     <View style={styles.container}>
       <Image
         source={{
           uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/album-cover-%2358-design-template-bd93962fbbef38a888efdc4f27fe081d_screen.jpg?ts=1611218479",
         }}
-        style={[styles.image, { height: height }]}
+        style={[styles.image, { height: height }, {width: width}]}
       />
       <View style={styles.profileContainer}>
         <Image
@@ -30,36 +47,31 @@ export default function ProfileScreen() {
             { width: profileImageSize },
             {
               borderRadius: profileImageSize / 2,
-              marginTop: height - profileImageSize / 2,
               borderWidth: 1,
               borderColor: "202020",
+              marginTop: -profileImageSize/2
             },
           ]}
         />
       </View>
-      <View style={{flexDirection: "row", marginLeft: (width / 2) - 10, marginTop: 15, marginBottom: 40, alignItems: "center", justifyContent: "space-around"}}> 
-        <Text
-          style={[
-            styles.usernameStyle,
-            { color: Colors[colorScheme ?? "light"].text },
-          ]}
-        >
-          bautisalva
-        </Text>
-        <View style={[{ backgroundColor: "#36D13B" },
-          styles.gamificationLevel
-        ]}> 
-          <Text style={[{fontWeight: "bold"}, {color: "#FFFFFF"}]}>Nivel 1</Text>
-        </View>
+      <View>
+        <Text style={styles.usernameStyle}>bautisalva</Text>
       </View>
-      <View style={styles.followStyle}>
-        <View style={styles.followersStyle}>
-          <Text style={styles.followerTitleStyle}>Seguidores</Text>
-          <Text style={styles.followersNumberStyle}>130</Text>
+      <View>
+        <Text style={styles.fullNameStyle}>Bautista Salvalai</Text>
+      </View>
+      <View style={[{flexDirection: "row"}]}>
+        <View style={[styles.gamificationLevel, {backgroundColor: "#36D13B"}]}>
+          <Text >Nivel 1</Text>
         </View>
-        <View style={styles.followersStyle}>
-          <Text style={styles.followerTitleStyle}>Seguidos</Text>
-          <Text style={styles.followersNumberStyle}>346</Text>
+      
+        <Text style={[{color: "#5081FF"}, {fontWeight: "bold"},{marginTop: 15}, {marginLeft: 20}]}>Hombre</Text>
+      </View>
+      <Text style={{marginTop: 15}}>Amante de los viajes en familia.22</Text>
+      <View>
+        <View style={styles.statsContainer}>
+            <Text style={styles.stat}>Seguidores{'\n'}130</Text>
+            <Text style={styles.stat}>Seguidos{'\n'}346</Text>
         </View>
       </View>
     </View>
@@ -69,13 +81,13 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
   },
   separator: {
-    marginVertical: 30,
     height: 1,
     width: "80%",
   },
@@ -83,40 +95,36 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   profileContainer: {
-    position: "absolute",
-    alignItems: "center",
     backgroundColor: "Transparent",
   },
   profileImage: {
     resizeMode: "cover",
-    marginLeft: 19,
+    justifyContent: "center"
   },
   usernameStyle: {
     fontWeight: "bold",
     fontSize: 24,
   },
-  followStyle: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-  },
-  followersStyle: {
-    flexDirection: "column",
-    alignItems: "center",
-    flex: 1,
-  },
-  followerTitleStyle: {
-    fontSize: 20,
-    fontWeight: "500",
-  },
-  followersNumberStyle: {
-    fontSize: 20,
-  },
   gamificationLevel: {
+    marginTop: 15,
     width: 54,
     height: 20,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 5,
-  }
+  },
+  fullNameStyle: {
+    marginTop: 15,
+    fontSize: 14
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: "60%",
+    marginTop: 30
+  },
+  stat: {
+    fontSize: 20,
+    textAlign: 'center',
+  },
 });

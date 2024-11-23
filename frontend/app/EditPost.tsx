@@ -1,19 +1,69 @@
 /* eslint-disable prettier/prettier */
-import { View } from "../components/Themed";
-import { Stack } from "expo-router";
+import { View } from "@/components/Themed";
+import { Stack, Router, router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, useColorScheme, TextInput, TouchableOpacity, Alert } from "react-native";
-import Colors from "../constants/Colors";
+import { Text, StyleSheet, useColorScheme, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
+import Colors from "@/constants/Colors";
 import { useLocalSearchParams } from "expo-router";
-import { Router } from "expo-router";
 import * as ImagePicker from 'expo-image-picker'
+import * as Location from 'expo-location';
+import { AdvancedImage, upload } from "cloudinary-react-native";
+import { cld } from "@/constants/Cloudinary";
 
+type Coordinates = Location.LocationObject | null
 
 export default function EditPost() {
-    const [location, onChangeLocation] = useState("")
+    const [location, setLocation] = useState<Coordinates>(null);
     const [description, onChangeDescription] = useState("")
+    const [adress, setAdress] = useState("")
+    const [imagesUri, setImageUri] = useState<string[]>([]);
+    const [locationPermission, setLocationPermission] = useState(false)
     const colorScheme = useColorScheme();
-    let { images }= useLocalSearchParams();
+    
+    let { images }= useLocalSearchParams(); //PARA RECIBIR LO QUE ME MANDA NEWPOST
+
+    useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            console.log("RECHAZADO")
+            return;
+          }
+          console.log("ACEPTADO")
+          setLocationPermission(true)
+          let currentLocation = await Location.getCurrentPositionAsync({}).then();
+          setLocation(currentLocation);
+        })();
+
+    }, []);
+
+    useEffect(()=>{
+        if(Location)
+            reverseGeocode();
+    },[location])
+
+    useEffect(() => {
+        if (images) {
+            console.log("Recibido en useEffect, images:", images);
+    
+            try {
+                // Analiza el string JSON
+                const parsedImages = JSON.parse(images as string);
+                console.log("Imagenes parseadas:", parsedImages);
+    
+                if (Array.isArray(parsedImages)) {
+                    const uris = parsedImages.map((image: { uri: string }) => image.uri);
+                    console.log("URIs extraídas:", uris);
+                    setImageUri(uris);
+                } else {
+                    console.warn("El formato de 'images' no es un array.");
+                }
+            } catch (error) {
+                console.error("Error al analizar 'images':", error);
+            }
+        }
+    }, [images]);
+
 
     const handleImageUpload = () => { 
         if(!images){
@@ -22,44 +72,101 @@ export default function EditPost() {
             )
         }
     }
-    console.log("IMAGENES PASADAS: ", images)
+
+    const reverseGeocode = async () => {
+        
+        if(location?.coords.latitude !== undefined && location?.coords.longitude !== undefined){
+            const getReverseGeocodedLocation = await Location.reverseGeocodeAsync({
+                latitude: location?.coords.latitude, 
+                longitude: location?.coords.longitude})
+
+            const { city, country, region } = getReverseGeocodedLocation[0];
+            const adress = city + ", " + region + ", " + country 
+            setAdress(adress);
+        }
+    }
+
+    
+    const handleAccept = async() => {
+        await uploadImages();
+    }
+
+    const uploadImages = async () => {
+        if (!imagesUri || imagesUri.length === 0) {
+            Alert.alert("Error", "No hay imágenes para subir");
+            return;
+        }
+    
+        const options = {
+            upload_preset: 'Default',
+            unsigned: true,
+        };
+    
+        try {
+            // Utiliza Promise.all para esperar a que todas las imágenes se suban.
+            const uploadPromises = imagesUri.map(async (uri) => {
+                // Sube cada imagen individualmente.
+                return await upload(cld, {
+                    file: uri, // Usa la URI de la imagen.
+                    options: options,
+                    callback: (error: any, response: any) => {
+                        if (error) {
+                            console.error("Error al subir la imagen:", error);
+                        } else {
+                            console.log("Imagen subida correctamente:", response);
+                            //TENGO QUE GUARDAR EN EL BACK EL response.public_id
+                        }
+                    }
+                });
+            });
+
+            // Espera a que todas las promesas se resuelvan.
+            const uploadResults = await Promise.all(uploadPromises);
+            console.log("Resultados de las subidas:", uploadResults);
+            Alert.alert("Éxito", "Todas las imágenes se han subido correctamente");
+
+            //SUBIR TODOS LOS CAMPOS AL BACKEND (public_id de las imagenes, description, adress y el usuario)
+
+        } catch (error) {
+            console.error("Error al subir imágenes:", error);
+            Alert.alert("Error", "Ocurrió un problema al subir las imágenes");
+        }
+    };
 
     return (
-        <View style={styles.container}>
-            <Stack.Screen options={{
-                headerTitle: "Nueva Publicacion"
-            }}/>
-            <View style={[styles.separator, {backgroundColor: Colors[colorScheme ?? "light"].barSeparator}]}  />
-            <View style={styles.configuration}>
-                <Text style={[styles.title, {color: Colors[colorScheme ?? "light"].text}]}>Configuracion del post</Text>
-                <TextInput style={[styles.input, 
-                    { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
-                    { color: Colors[colorScheme ?? "light"].text },
-                    { height: 40 }]} 
-
-                    value={location}
-                    onChangeText={onChangeLocation}
-                    placeholder="Ingrese ubicacion (Opcional)..."
-                    placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
-                    </TextInput>
-                <TextInput style={[styles.input, 
-                    { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
-                    { color: Colors[colorScheme ?? "light"].text },
-                    { height: 130 },
-                    { flexDirection: "column"},
-                    { justifyContent: "flex-start"}]}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={styles.container}>
+                <Stack.Screen options={{
+                    headerTitle: "Nueva Publicacion"
+                }}/>
+                
+                <View style={[styles.separator, {backgroundColor: Colors[colorScheme ?? "light"].barSeparator}]}  />
+                <View style={styles.configuration}>
                     
-                    value={description}
-                    onChangeText={onChangeDescription}
-                    placeholder="Ingrese una descripcion (Opcional)..."
-                    placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
-                > 
-                </TextInput>
-                <TouchableOpacity style={styles.button} onPress={handleImageUpload}>
-                    <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Aceptar</Text>
-                </TouchableOpacity>
+                        <Text style={[styles.title, {color: Colors[colorScheme ?? "light"].text}]}>Configuracion del post</Text>
+                        <Text style={[styles.input, {color: Colors[colorScheme ?? "light"].text}]}>Ubicacion: {locationPermission ? adress : "No hay ubicacion"}</Text>
+                            
+                        <TextInput style={[styles.input, 
+                            { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
+                            { color: Colors[colorScheme ?? "light"].text },
+                            { height: 130 },
+                            { flexDirection: "column"},
+                            { justifyContent: "flex-start"}]}
+                            
+                            value={description}
+                            onChangeText={onChangeDescription}
+                            placeholder="Ingrese una descripcion (Opcional)..."
+                            placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
+                            multiline
+                        > 
+                        </TextInput>
+                    
+                    <TouchableOpacity style={styles.button} onPress={handleAccept}>
+                        <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Aceptar</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 
 }
