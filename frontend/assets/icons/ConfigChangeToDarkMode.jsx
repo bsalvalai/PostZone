@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import * as React from "react";
 import { Svg, Path } from "react-native-svg";
-export const ConfigChangeToDarkMode = (props) => (
+export const ConfigChangeToDarkMode = ({color, ...props}) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={48}
@@ -10,7 +10,7 @@ export const ConfigChangeToDarkMode = (props) => (
     {...props}
   >
     <Path
-      stroke="#202020"
+      stroke={color}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
