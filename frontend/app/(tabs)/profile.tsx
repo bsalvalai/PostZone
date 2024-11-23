@@ -47,11 +47,12 @@ export default function ProfileScreen() {
       <View>
         <Text style={styles.fullNameStyle}>Bautista Salvalai</Text>
       </View>
-      <View style={[styles.gamificationLevel, {backgroundColor: "#36D13B"}]}>
-        <Text >Nivel 1</Text>
-      </View>
-      <View>
-          <Text style={[{color: "#5081FF"}, {fontWeight: "bold"},{marginTop: 15}]}>Hombre</Text>
+      <View style={[{flexDirection: "row"}]}>
+        <View style={[styles.gamificationLevel, {backgroundColor: "#36D13B"}]}>
+          <Text >Nivel 1</Text>
+        </View>
+      
+        <Text style={[{color: "#5081FF"}, {fontWeight: "bold"},{marginTop: 15}, {marginLeft: 20}]}>Hombre</Text>
       </View>
       <Text style={{marginTop: 15}}>Amante de los viajes en familia.22</Text>
       <View>
