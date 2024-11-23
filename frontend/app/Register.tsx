@@ -47,15 +47,7 @@ export default function Register() {
                         style={[styles.input, { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, { color: Colors[colorScheme ?? "light"].text }]}
                         value={firstName}
                         onChangeText={onChangeFirstName}
-                        placeholder="Ingrese su nombre"
-                        placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
-                    />
-
-                    <TextInput 
-                        style={[styles.input, { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, { color: Colors[colorScheme ?? "light"].text }]}
-                        value={lastName}
-                        onChangeText={onChangeLastName}
-                        placeholder="Ingrese su apellido"
+                        placeholder="Ingrese su nombre y apellido"
                         placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
                     />
                     <TextInput

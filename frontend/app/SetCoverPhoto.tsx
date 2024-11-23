@@ -8,6 +8,8 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router"
 import * as ImagePicker from "expo-image-picker"
+import { cld } from "@/constants/Cloudinary";
+import { AdvancedImage } from "cloudinary-react-native";
 import React from "react";
 
 
@@ -18,6 +20,7 @@ export default function SetCoverPhoto() {
     const [image, setImage] = useState<ImagePicker.ImagePickerAsset>() || undefined;
     const { width } = Dimensions.get("screen");
 
+    const defaultCoverPhoto = cld.image("default_cover_xhshjb")
 
     
     const handleChooser = async() =>{
@@ -62,7 +65,6 @@ export default function SetCoverPhoto() {
         })
         
         if (!result.canceled && result.assets[0]) {
-            console.log(result.assets[0]);
             setImage(result.assets[0]);
         } else {
             Alert.alert("Error", "No seleccionaste ninguna imagen")
@@ -85,7 +87,7 @@ export default function SetCoverPhoto() {
                 headerTitle: "Foto de perfil"
             }}
         />
-        {!image && <View style={[styles.image, {height: width/2}, {backgroundColor: "#A3A3A3"}]}></View>}
+        {!image && <Image source={{uri: defaultCoverPhoto.toURL()}} style={[styles.image, {height: width/2}]}/>}
         {image && <Image source={image} style={[styles.image, {height: width/2}]}/>}
         <TouchableOpacity style={styles.button} onPress={handleChooser}>
             <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Agregar Foto</Text>

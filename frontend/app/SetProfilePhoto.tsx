@@ -8,8 +8,8 @@ import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router"
 import * as ImagePicker from "expo-image-picker"
-
-import defaultIcon from "@/assets/images/default_icon.png"
+import { AdvancedImage } from "cloudinary-react-native";
+import { cld } from "@/constants/Cloudinary";
 import React from "react";
 
 export default function SetProfilePhoto() {
@@ -18,6 +18,7 @@ export default function SetProfilePhoto() {
     const [image, setImage] = useState("")
     const { width } = Dimensions.get("screen");
 
+    const defaultImage = cld.image("default_icon_bvd2di")
 
     console.log("nombre: ", firstName)
     console.log("apellido: ", lastName)
@@ -96,7 +97,8 @@ export default function SetProfilePhoto() {
                 headerTitle: "Foto de perfil"
             }}
         />
-        {!image && <Image source={defaultIcon} style={[styles.image, {height: width}]}/>}
+
+        {!image && <Image source={{uri: defaultImage.toURL()}} style={[styles.image, {height: width}]}/>}
         {image && <Image source={{uri: image}} style={[styles.image, {height: width}]}/>}
         <TouchableOpacity style={styles.button} onPress={handleChooser}>
             <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Agregar Foto</Text>
@@ -148,6 +150,5 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 200,
 },
 });
