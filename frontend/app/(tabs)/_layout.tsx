@@ -13,7 +13,7 @@ import { TabProfile } from "../../assets/icons/TabProfile";
 import { TabNewPost } from "../../assets/icons/TabNewPost";
 import { TabFavourites } from "../../assets/icons/TabFavourites";
 import { Notifications } from "../../assets/icons/Notifications";
-import { Configuration } from "@/assets/icons/Configuration";
+import { Configuration } from "../../assets/icons/Configuration";
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 
 export default function TabLayout() {
@@ -44,7 +44,7 @@ export default function TabLayout() {
           backgroundColor: Colors[colorScheme ?? "light"].background,
           borderTopWidth: 1,
           borderTopColor: Colors[colorScheme ?? "light"].barSeparator,
-          height: 70,
+          height: 100,
           paddingTop: 15,
         }, //Color de la tabBar
         tabBarShowLabel: false,
