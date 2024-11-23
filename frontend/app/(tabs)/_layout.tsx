@@ -31,7 +31,7 @@ export default function TabLayout() {
             backgroundColor: Colors[colorScheme ?? "light"].background,
             borderBottomWidth: 1,
             borderBottomColor: Colors[colorScheme ?? "light"].barSeparator,
-            height: 67,
+            height: 100,
           },
           android: {
             backgroundColor: Colors[colorScheme ?? "light"].background,
