@@ -4,8 +4,9 @@ import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "react-native";
 //import { green } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
-import React from "react";
-
+import React, { useEffect } from "react";
+import { Configuration } from "../../assets/icons/Configuration"
+import { useNavigation } from "expo-router";
 
 export default function ProfileScreen() {
   const colorScheme = useColorScheme();
@@ -14,7 +15,19 @@ export default function ProfileScreen() {
   const profileImageSize = width * 0.35;
 
   //Habria que hacer una configuracion para los colores de los generos y los colores de la gamificacion
-  //FALTARIA CAMBIAR EL DISENIO 
+  //Que se pase un enum en donde, dependiendo del nivel de gamificacion, te agarre el color correspondiente 
+  //NIVEL 1: "#36D13B"
+  //NIVEL 2: "#352FDE"
+  //NIVEL 3: "#C72FDE"
+  //NIVEL 4: "#CD4D4F"
+
+  
+  useEffect(()=>{
+    //Deberia conseguir el token y hacer la llamada al axios desde aca.
+
+  },[])
+  
+
   return (
     <View style={styles.container}>
       <Image

@@ -13,7 +13,7 @@ import { TabProfile } from "../../assets/icons/TabProfile";
 import { TabNewPost } from "../../assets/icons/TabNewPost";
 import { TabFavourites } from "../../assets/icons/TabFavourites";
 import { Notifications } from "../../assets/icons/Notifications";
-
+import { Configuration } from "@/assets/icons/Configuration";
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 
 export default function TabLayout() {
@@ -61,7 +61,6 @@ export default function TabLayout() {
             <TabHome color={Colors[colorScheme ?? "light"].text}/>
           ),
           headerRight: () => (
-            //Meter el logo de las notificaciones aca
             <Link href="/notifications" asChild>
               <Pressable>
                 <Notifications
@@ -111,6 +110,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <TabProfile color={Colors[colorScheme ?? "light"].text} />
           ),
+          headerRight: () => (
+            <Link href="/Configuration" asChild>
+              <Configuration 
+              color={Colors[colorScheme ?? "light"].text} 
+              style={{marginRight: 16}}/>
+            </Link>
+          )
         }}
       />
       
