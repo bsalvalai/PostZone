@@ -3,20 +3,24 @@ import { Dimensions, Pressable, StyleSheet, useColorScheme, useWindowDimensions,
 
 import {AntDesign, Ionicons, Feather} from '@expo/vector-icons'
 
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
-import Colors  from "@/constants/Colors";
+//import EditScreenInfo from "@/components/EditScreenInfo";
+//import { Text, View } from "@/components/Themed";
+import { Text, View } from "../../components/Themed";
+//import Colors  from "@/constants/Colors";
+import Colors from "../../constants/Colors";
 import { Link } from "expo-router";
 import React from "react";
 import { AdvancedImage } from "cloudinary-react-native"
 import { Cloudinary } from "@cloudinary/url-gen";
-import { cld } from "@/constants/Cloudinary";
+//import { cld } from "@/constants/Cloudinary";
+import { cld } from "../../constants/Cloudinary";
 
 import { thumbnail } from "@cloudinary/url-gen/actions/resize";
 import { byRadius } from "@cloudinary/url-gen/actions/roundCorners";
 import { focusOn } from "@cloudinary/url-gen/qualifiers/gravity";
 import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
-import PostListItem from "@/components/PostListItem";
+//import PostListItem from "@/components/PostListItem";
+import PostListItem from "../../components/PostListItem";
 
 
 export default function HomeScreen() {

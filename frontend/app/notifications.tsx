@@ -3,8 +3,9 @@ import { Text, View } from "../components/Themed";
 import { Stack } from "expo-router";
 import { StyleSheet, useColorScheme } from "react-native";
 import { Tabs } from "expo-router"
-import Colors from "@/constants/Colors";
-import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+//import Colors from "@/constants/Colors";
+import Colors from "../constants/Colors";
+//import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import React from "react";
 export default function NotificationsScreen() {
   const colorScheme = useColorScheme();

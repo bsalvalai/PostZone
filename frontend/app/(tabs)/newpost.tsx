@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Button, Image, StyleSheet, Dimensions, TouchableOpacity, ScrollView, useColorScheme, Pressable, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import PagerView from "react-native-pager-view";
-import Colors from "@/constants/Colors";
+//import Colors from "@/constants/Colors";
+import Colors from "../../constants/Colors";
 import { Link, router, Stack, useNavigation } from "expo-router";
 import { Reject } from "../../assets/icons/Reject";
 import { Confirmation } from "../../assets/icons/Confirm"

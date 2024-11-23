@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet, TextInput, TouchableOpacity, useColorScheme } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
-import Colors from "@/constants/Colors";
+//import EditScreenInfo from "@/components/EditScreenInfo";
+//import { Text, View } from "@/components/Themed";
+import { Text, View } from "../components/Themed";
+//import Colors from "@/constants/Colors";
+import Colors from "../constants/Colors";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Stack } from "expo-router"

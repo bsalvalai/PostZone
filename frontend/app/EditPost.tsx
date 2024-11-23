@@ -1,14 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { View } from "@/components/Themed";
+import { View } from "../components/Themed";
+//import { View } from "@/components/Themed";
 import { Stack, Router, router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, useColorScheme, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
-import Colors from "@/constants/Colors";
+//import Colors from "@/constants/Colors";
+import Colors from "../constants/Colors";
 import { useLocalSearchParams } from "expo-router";
 import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location';
 import { AdvancedImage, upload } from "cloudinary-react-native";
-import { cld } from "@/constants/Cloudinary";
+//import { cld } from "@/constants/Cloudinary";
+import { cld } from "../constants/Cloudinary";
 
 type Coordinates = Location.LocationObject | null
 

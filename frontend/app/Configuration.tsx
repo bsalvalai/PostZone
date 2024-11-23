@@ -1,23 +1,38 @@
 /* eslint-disable prettier/prettier */
 
-import { View, Text } from "@/components/Themed";
+//import { View, Text } from "@/components/Themed";
+import { View, Text } from "../components/Themed";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { Stack } from "expo-router"
 //Opciones de configuracion en orden
-import { ChangeName } from "@/assets/icons/ChangeName"
-import { ConfigEditUserPhoto } from "@/assets/icons/ConfigEditUserPhoto"
-import { ConfigEditCoverPhoto } from "@/assets/icons/ConfigEditCoverPhoto"
-import { ConfigChangePassword } from "@/assets/icons/ConfigChangePassword"
+//import { ChangeName } from "@/assets/icons/ChangeName"
+import { ChangeName} from "./../assets/icons/ChangeName"
+//import { ConfigEditUserPhoto } from "@/assets/icons/ConfigEditUserPhoto"
+import {ConfigEditUserPhoto} from "./../assets/icons/ConfigEditUserPhoto"
+//import { ConfigEditCoverPhoto } from "@/assets/icons/ConfigEditCoverPhoto"
+import {ConfigEditCoverPhoto} from "./../assets/icons/ConfigEditCoverPhoto";
 
-import { ConfigChangeToDarkMode } from "@/assets/icons/ConfigChangeToDarkMode"
-import { ConfigChangeToLightMode } from "@/assets/icons/ConfigChangeToLightMode"
+//import { ConfigChangePassword } from "@/assets/icons/ConfigChangePassword"
+import { ConfigChangePassword} from "./../assets/icons/ConfigChangePassword"
 
-import { ConfigEditNotifications } from "@/assets/icons/ConfigEditNotifications"
-import { ConfigLogOut } from "@/assets/icons/ConfigLogOut"
-import { ConfigDeleteAccount } from "@/assets/icons/ConfigDeleteAccount"
-import Colors from "@/constants/Colors";
-import { useColorScheme } from "@/components/useColorScheme";
+//import { ConfigChangeToDarkMode } from "@/assets/icons/ConfigChangeToDarkMode"
+import { ConfigChangeToDarkMode} from "./../assets/icons/ConfigChangeToDarkMode"
+//import { ConfigChangeToLightMode } from "@/assets/icons/ConfigChangeToLightMode"
+import { ConfigChangeToLightMode } from "./../assets/icons/ConfigChangeToLightMode"
+
+//import { ConfigEditNotifications } from "@/assets/icons/ConfigEditNotifications"
+import {ConfigEditNotifications} from "./../assets/icons/ConfigEditNotifications"
+
+//import { ConfigLogOut } from "@/assets/icons/ConfigLogOut"
+import { ConfigLogOut } from "./../assets/icons/ConfigLogOut"
+
+//import { ConfigDeleteAccount } from "@/assets/icons/ConfigDeleteAccount"
+import { ConfigDeleteAccount } from "./../assets/icons/ConfigDeleteAccount"
+//import Colors from "@/constants/Colors";
+import Colors from "../constants/Colors";
+//import { useColorScheme } from "@/components/useColorScheme";
+import { useColorScheme } from "react-native";
 
 export default function Configuration(){
     let systemColorScheme = useColorScheme()

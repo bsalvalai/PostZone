@@ -1,14 +1,17 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet, TextInput, TouchableOpacity, useColorScheme, Alert, Image, Dimensions } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
-import Colors from "@/constants/Colors";
+//import EditScreenInfo from "@/components/EditScreenInfo";
+//import { Text, View } from "@/components/Themed";
+import { Text, View } from "../components/Themed";
+//import Colors from "@/constants/Colors";
+import Colors from "../constants/Colors";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router"
 import * as ImagePicker from "expo-image-picker"
-import { cld } from "@/constants/Cloudinary";
+//import { cld } from "@/constants/Cloudinary";
+import { cld } from "../constants/Cloudinary";
 import { AdvancedImage } from "cloudinary-react-native";
 import React from "react";
 
