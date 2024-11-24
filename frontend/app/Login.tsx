@@ -1,23 +1,34 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet, TextInput, TouchableOpacity, useColorScheme } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { Stack } from "expo-router"
 import React from "react";
+import axios from "axios";
+export let token="";
 
 export default function Login() {
     const colorScheme = useColorScheme();
     const [mail, onChangeMail] = useState("")
     const [password, onChangePassword] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
     
-    const handleLogin = () =>{
-        //VALIDAR LA CUENTA
+    const handleLogin = async () =>{
+        setErrorMessage("");
         if(!mail || !password){
             alert("ERROR TE OLVIDASTE DE LLENAR TODO")
+        }
+        try {
+            const result = await axios.post("https://postzone.onrender.com/sessions",{email:mail, password})
+            console.log(JSON.stringify(result.data,null,2));
+            token = result.data.token; //Guardo el token
+        } catch (error) {
+           //setErrorMessage(error.response.data.error) //traigo el mensaje del back de error.
+           // @ts-ignore
+           alert(error.response.data.error)
         }
     }
 
@@ -30,6 +41,7 @@ export default function Login() {
             }}
         />
         <Text style={[styles.title, {color: Colors[colorScheme ?? "light"].text}]}>Iniciar sesion</Text>
+        <Text style={[styles.title, {color: Colors[colorScheme ?? "light"].text}]}>{errorMessage}</Text>
         <TextInput style={[styles.input, 
         { backgroundColor: Colors[colorScheme ?? "light"].textInputBackGround }, 
         { color: Colors[colorScheme ?? "light"].text }]} 
