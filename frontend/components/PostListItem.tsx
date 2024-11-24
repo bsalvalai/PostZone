@@ -7,12 +7,13 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { Text, View } from "@/components/Themed";
 import { AdvancedImage } from "cloudinary-react-native";
-import { cld } from "@/constants/Cloudinary";
+import { cld } from "../constants/Cloudinary";
 import { thumbnail } from "@cloudinary/url-gen/actions/resize";
 
 const { width } = Dimensions.get("screen");
+
+// Configuración de imágenes de ejemplo
 const postImage1 = cld
   .image("cld-sample-2")
   .resize(thumbnail().width(width).height(width));
