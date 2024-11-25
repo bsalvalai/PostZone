@@ -2,8 +2,8 @@
 
 import { View, Text } from "@/components/Themed";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { Stack } from "expo-router"
+import { StyleSheet, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { router, Stack } from "expo-router"
 //Opciones de configuracion en orden
 import { ChangeName } from "@/assets/icons/ChangeName"
 import { ConfigEditUserPhoto } from "@/assets/icons/ConfigEditUserPhoto"
@@ -23,84 +23,103 @@ export default function Configuration(){
     let systemColorScheme = useColorScheme()
     const [colorScheme, setColorScheme] = useState(systemColorScheme ?? "light")
 
-    const handlePressLightMode = () => {
-        setColorScheme("light")
 
+    //EN ALGUNOS DE ESTOS HANDLE, SE PODRIAN PASAR LOS DATOS DEL USUARIO A LAS VISTAS COMO PARAMETROS
+    //SOLO QUE ES NECESARIO USAR, EN LA VISTA A LA QUE SE NAVEGUE, EL useLocalSearchParams(); (Hay algunas vistas como en EditPost.tsx que se usa, para tener de referencia)
+    const handleChangeName = () => {
+        router.push({
+            pathname: "/ConfigChangeName"
+        })
     }
 
+    const handleChangeProfilePhoto = () => {
+        router.push({
+            pathname: "/ConfigChangeProfilePhoto"
+        })
+    }
 
-    const handlePressDarkMode = () => {
-        setColorScheme("dark")
+    const handleChangeCoverPhoto = () => {
+        router.push({
+            pathname: "/ConfigChangeCoverPhoto"
+        })
+    }
 
+    const handleChangePassword = () => {
+        router.push({
+            pathname: "/ConfigChangePassword"
+        })
+    }
+    const handleLogOut = () => {
+        Alert.alert("Cerrar sesion","Esta seguro de que quiere cerrar sesion?",[
+            {text: "Cancelar"},
+            {text: "Si", onPress:() => {
+                //ACA IRIA LA LOGICA PARA DESLOGUEARSE, CON AXIOS
+            }},
+        ])
     }
 
     const handleDeleteAccount = () => {
-        alert("Estas seguro de que quieres borrar tu cuenta?")
+        Alert.alert("Borrar Cuenta","Esta seguro de que quiere borrar su cuenta?",[
+            {text: "Cancelar"},
+            {text: "Si", onPress:() => {
+                //ACA IRIA LA LOGICA PARA BORRAR LA CUENTA, CON AXIOS
+            }},
+        ])
     }
 
+    
+
+    //Boton de editar notificaciones por si a alguien se le ocurre que hacer
+    //<TouchableOpacity style={styles.option}>
+    //    <ConfigEditNotifications color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
+    //    <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Editar notificaciones</Text>
+    //</TouchableOpacity>
+
+
+    //SI TIRA UN ERROR QUE DICE "Warning: Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()?"
+    //TENGO ENTENDIDO QUE ES PORQUE EN LOS COMPONENTES USO EL styles.icon, PERO ANDAR, ANDA
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <Stack.Screen 
-                options={{
-                    headerTitle: "Configuracion"
-                }}/>
-                <View style={[styles.separator, {backgroundColor: Colors[colorScheme ?? "light"].barSeparator}]}  />
-                <TouchableOpacity style={[styles.option, {marginTop: 50}]}>
-                    <ChangeName color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
-                    <Text  style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Cambiar nombre y apellido</Text>
-                </TouchableOpacity>
+        <View style={styles.container}>
+            <Stack.Screen 
+            options={{
+                headerTitle: "Configuracion"
+            }}/>
+            <View style={[styles.separator, {backgroundColor: Colors[colorScheme ?? "light"].barSeparator}]}  />
+            
+            <TouchableOpacity style={[styles.option, {marginTop: 50}]} onPress={handleChangeName}>
+                <ChangeName color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
+                <Text  style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Cambiar nombre y apellido</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.option} onPress={handleChangeProfilePhoto}> 
+                <ConfigEditUserPhoto color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
+                <Text  style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Editar foto de perfil</Text>
+            </TouchableOpacity>
 
-                <TouchableOpacity style={styles.option}> 
-                    <ConfigEditUserPhoto color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
-                    <Text  style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Editar foto de perfil</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.option} onPress={handleChangeCoverPhoto}>
+                <ConfigEditCoverPhoto color={Colors[colorScheme ?? "light"].text} style={styles.icon}/> 
+                <Text  style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Editar foto de portada</Text>
+            </TouchableOpacity>
 
-                <TouchableOpacity style={styles.option}>
-                    <ConfigEditCoverPhoto color={Colors[colorScheme ?? "light"].text} style={styles.icon}/> 
-                    <Text  style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Editar foto de portada</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.option} onPress={handleChangePassword}>
+                <ConfigChangePassword color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
+                <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Cambiar contraseña</Text>
+            </TouchableOpacity>
 
-                <TouchableOpacity style={styles.option}>
-                    <ConfigChangePassword color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
-                    <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Cambiar contraseña</Text>
-                </TouchableOpacity>
 
-                {colorScheme === "dark" && (
-                    <>
-                        <TouchableOpacity style={styles.option} onPress={handlePressLightMode}>
-                            <ConfigChangeToLightMode color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
-                            <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Cambiar a modo claro</Text>
-                        </TouchableOpacity>
-                    </>
-                )}
-                {colorScheme !== "dark" && (
-                    <>
-                        <TouchableOpacity style={styles.option} onPress={handlePressDarkMode}>
-                            <ConfigChangeToDarkMode color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
-                            <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Cambiar a modo oscuro</Text>
-                        </TouchableOpacity>
-                    </>
-                )}
+            <TouchableOpacity style={styles.option} onPress={handleLogOut}>
+                <ConfigLogOut color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
+                <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Cerrar sesion</Text>
+            </TouchableOpacity>
 
-                <TouchableOpacity style={styles.option}>
-                    <ConfigEditNotifications color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
-                    <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Editar notificaciones</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.option}>
-                    <ConfigLogOut color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
-                    <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Cerrar sesion</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.option}>
-                    <ConfigDeleteAccount color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
-                    <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Borrar cuenta</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.option} onPress={handleDeleteAccount}>
+                <ConfigDeleteAccount color={Colors[colorScheme ?? "light"].text} style={styles.icon}/>
+                <Text style={[{color: Colors[colorScheme ?? "light"].text}, styles.optionText]}>Borrar cuenta</Text>
+            </TouchableOpacity>
 
                 
-            </View>
-        </ScrollView>
+        </View>
+        
     )
 }
 
@@ -110,7 +129,7 @@ const styles = StyleSheet.create({
     },
     option: {
         flexDirection: "row",
-        marginVertical: 15,
+        marginVertical: 20,
         justifyContent: "space-between",
         alignItems: "center"
     },
