@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, TouchableOpacity, useColorScheme } from "react-n
 
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { Stack } from "expo-router"
 import React from "react";
@@ -15,6 +15,7 @@ export default function Login() {
     const [mail, onChangeMail] = useState("")
     const [password, onChangePassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
+    const router = useRouter(); // Inicializa el hook de navegación
     
     const handleLogin = async () =>{
         setErrorMessage("");
@@ -25,11 +26,17 @@ export default function Login() {
             const result = await axios.post("https://postzone.onrender.com/sessions",{email:mail, password})
             console.log(JSON.stringify(result.data,null,2));
             token = result.data.token; //Guardo el token
+            setClientToken(token);
+            router.push("/(tabs)/profile") //Redirect al perfil del usuario.
         } catch (error) {
            //setErrorMessage(error.response.data.error) //traigo el mensaje del back de error.
            // @ts-ignore
            alert(error.response.data.error)
         }
+    }
+
+    function setClientToken(token: string) {
+        axios.defaults.headers.common = {Authorization: "bearer " + {token}};
     }
 
     return (

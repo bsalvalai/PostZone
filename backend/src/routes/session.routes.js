@@ -23,3 +23,5 @@ router.delete('/', jwtValidator, sessionController.logout);
 router.put('/', jwtValidator, sessionController.refreshToken);
 
 module.exports = router;
+
+
