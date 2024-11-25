@@ -4,7 +4,9 @@ import {
   Modal,
   Pressable,
   StyleSheet,
-  useWindowDimensions,
+  Image,
+  Text,
+  View,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { AdvancedImage } from "cloudinary-react-native";
@@ -28,7 +30,7 @@ const userImage = cld.image("samples/smile");
 export default function PostListItem() {
   const [showComments, setShowComments] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<any>(null); // Cambiado a aceptar cualquier objeto de imagen
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); // Cambiado a string para almacenar URL
 
   return (
     <View style={styles.container}>
@@ -53,7 +55,7 @@ export default function PostListItem() {
         {[postImage1, postImage2, postImage3].map((img, index) => (
           <Pressable
             key={index}
-            onPress={() => setSelectedImage(img)} // Guardar directamente el objeto de imagen
+            onPress={() => setSelectedImage(img.toURL())} // Guardar URL de la imagen
           >
             <AdvancedImage cldImg={img} style={styles.postImage} />
           </Pressable>
@@ -77,7 +79,7 @@ export default function PostListItem() {
 
       {/* Comments Section */}
       {showComments && (
-        <View style={styles.comments}>
+        <View>
           <Text style={styles.comment}>
             <Text style={styles.commentAuthor}>fedee56 </Text>
             Que lindo paisaje amigo! Me alegro que lo hayas disfrutado
@@ -94,16 +96,21 @@ export default function PostListItem() {
         visible={!!selectedImage}
         transparent={true}
         onRequestClose={() => setSelectedImage(null)}
-      >
+        >
         <View style={styles.modalContainer}>
-          <Pressable onPress={() => setSelectedImage(null)} style={styles.modalClose}>
-            <Text style={styles.closeText}>Cerrar</Text>
-          </Pressable>
-          {selectedImage && (
-            <AdvancedImage cldImg={selectedImage} style={styles.fullscreenImage} />
-          )}
+            {selectedImage && (
+            <Image
+                source={{ uri: selectedImage }}
+                style={styles.fullscreenImage}
+                resizeMode="contain"
+            />
+            )}
+            <Pressable onPress={() => setSelectedImage(null)} style={styles.modalClose}>
+            <Text style={styles.closeText}>X</Text>
+            </Pressable>
         </View>
-      </Modal>
+        </Modal>
+
     </View>
   );
 }
@@ -162,19 +169,18 @@ const styles = StyleSheet.create({
     gap: 7,
     padding: 5,
     marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#333",
+    paddingBottom: 10,
   },
   iconText: {
     color: "white",
     marginLeft: 1,
   },
-  comments: {
-    borderTopWidth: 1,
-    borderTopColor: "#333",
-    paddingTop: 10,
-  },
   comment: {
     color: "white",
     marginBottom: 5,
+    paddingLeft:15
   },
   commentAuthor: {
     fontWeight: "bold",
@@ -187,13 +193,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalClose: {
-    position: "absolute",
-    top: 40,
-    right: 20,
+    marginTop: 10, // Espaciado entre la imagen y el botón
+    alignItems: "center",
   },
   closeText: {
     color: "white",
     fontSize: 18,
+    textAlign: "center",
   },
   fullscreenImage: {
     width: "90%",
