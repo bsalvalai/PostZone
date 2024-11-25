@@ -92,6 +92,8 @@ export default function EditPost() {
     }
 
     const uploadImages = async () => {
+
+        
         if (!imagesUri || imagesUri.length === 0) {
             Alert.alert("Error", "No hay imágenes para subir");
             return;
@@ -114,11 +116,14 @@ export default function EditPost() {
                             console.error("Error al subir la imagen:", error);
                         } else {
                             console.log("Imagen subida correctamente:", response);
+                            //FALTARIA QUE LO GUARDE EN LA BASE DE DATOS
+                            //
                             //TENGO QUE GUARDAR EN EL BACK EL response.public_id
                         }
                     }
                 });
             });
+            //SE PODRIA HACER UNA LISTA CON TODOS LOS PUBLIC_ID DE LAS IMAGENES (STRINGS)
 
             // Espera a que todas las promesas se resuelvan.
             const uploadResults = await Promise.all(uploadPromises);

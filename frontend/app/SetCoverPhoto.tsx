@@ -15,12 +15,12 @@ import React from "react";
 
 
 export default function SetCoverPhoto() {
-    let {firstName, lastName, mail, password, username, gender} = useLocalSearchParams();
+    let {firstName, mail, password, username,gender, profileImage} = useLocalSearchParams();
     const colorScheme = useColorScheme();
     const [image, setImage] = useState<ImagePicker.ImagePickerAsset>() || undefined;
     const { width } = Dimensions.get("screen");
 
-    const defaultCoverPhoto = cld.image("default_cover_xhshjb")
+    const defaultCoverPhoto = cld.image("default_cover_xhshjb") //IMAGEN DE PORTADA POR DEFECTO
 
     
     const handleChooser = async() =>{
@@ -79,12 +79,14 @@ export default function SetCoverPhoto() {
 
     const handleNext = () => {
 
+        //FALTARIA QUE TODOS LOS DATOS QUE ME TRAJE ANTES HABRIA QUE POSTEARLO
     }
+
     return (
     <View style={styles.container}>
         <Stack.Screen
             options={{
-                headerTitle: "Foto de perfil"
+                headerTitle: "Foto de Portada"
             }}
         />
         {!image && <Image source={{uri: defaultCoverPhoto.toURL()}} style={[styles.image, {height: width/2}]}/>}

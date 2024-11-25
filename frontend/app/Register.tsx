@@ -12,7 +12,7 @@ import React from "react";
 export default function Register() {
     const colorScheme = useColorScheme();
     const [firstName, onChangeFirstName] = useState("")
-    const [lastName, onChangeLastName] = useState("")
+    
     const [mail, onChangeMail] = useState("")
     const [password, onChangePassword] = useState("")
     const [repeatPassword, onChangeRepeatPassword] = useState("")
@@ -21,15 +21,16 @@ export default function Register() {
 
 
     const handleNext = () => {
-        if(!firstName || !lastName || !mail || !password || !repeatPassword || !username || !gender){
+        if(!firstName || !mail || !password || !repeatPassword || !username || !gender){
             Alert.alert("Error","No se completaron todos los campos")
             
         }
+        
         //HABRIA QUE VERIFICAR LOS MAILS, PASSWORDS Y USERNAME CON EL BACK
         //El password habria que chequearlo con el repeat password
         router.push({
             pathname: "/SetProfilePhoto",
-            params: {firstName, lastName, mail, password, username, gender},
+            params: {firstName, mail, password, username, gender},
         })
     }
     return (
@@ -87,11 +88,11 @@ export default function Register() {
                         placeholder="Ingrese su género..."
                         placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
                     />
-                    <Link href="/Login" asChild>
-                        <TouchableOpacity>
-                            <Text style={{ marginTop: 20 }}>¿Ya tienes una cuenta? Inicia sesión aquí</Text>
-                        </TouchableOpacity>
-                    </Link>
+                
+                    <TouchableOpacity onPress={()=>router.back()}>
+                        <Text style={{ marginTop: 20 }}>¿Ya tienes una cuenta? Inicia sesión aquí</Text>
+                    </TouchableOpacity>
+                    
                     <TouchableOpacity style={styles.button} onPress={handleNext}>
                         <Text style={[{ color: "#FFFFFF" }, { fontSize: 16 }, { justifyContent: "center" }]}>Siguiente</Text>
                     </TouchableOpacity>

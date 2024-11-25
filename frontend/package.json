@@ -17,7 +17,7 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/native": "^6.0.2",
     "@types/react-native-snap-carousel": "^3.8.11",
-    "axios": "^1.7.7",
+    "axios": "^1.7.8",
     "cloudinary-react-native": "^1.0.0",
     "expo": "^52.0.6",
     "expo-font": "~13.0.1",

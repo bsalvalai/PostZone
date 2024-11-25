@@ -1,29 +1,45 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet, TextInput, TouchableOpacity, useColorScheme } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { Stack } from "expo-router"
 import React from "react";
+import axios from "axios";
+export let token="";
 
 export default function Login() {
     const colorScheme = useColorScheme();
     const [mail, onChangeMail] = useState("")
     const [password, onChangePassword] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
+    const router = useRouter(); // Inicializa el hook de navegación
     
-    const handleLogin = () =>{
-
+    const handleLogin = async () =>{
+        setErrorMessage("");
         if(!mail || !password){
-            alert("Te olvidase de llenar los campos")
+            alert("ERROR TE OLVIDASTE DE LLENAR TODO")
         }
-
-        //FALTA VALIDAR LA CUENTA Y CREAR LA SESION
-
+        try {
+            const result = await axios.post("https://postzone.onrender.com/sessions",{email:mail, password})
+            console.log(JSON.stringify(result.data,null,2));
+            token = result.data.token; //Guardo el token
+            setClientToken(token);
+            router.push("/(tabs)/profile") //Redirect al perfil del usuario.
+        } catch (error) {
+           //setErrorMessage(error.response.data.error) //traigo el mensaje del back de error.
+           // @ts-ignore
+           alert(error.response.data.error)
+        }
     }
 
+    function setClientToken(token: string) {
+        axios.defaults.headers.common = {Authorization: "bearer " + {token}};
+    }
+
+    //<Text style={[styles.title, {color: Colors[colorScheme ?? "light"].text}]}>{errorMessage}</Text> LE SAQUE ESTO PORQUE ME HACIA UN ESPACIO GIGANTE
     return (
     <View style={styles.container}>
         <Stack.Screen
@@ -50,25 +66,24 @@ export default function Login() {
         value={password}
         onChangeText={onChangePassword}
         placeholder="Ingrese su contraseña"
-        placeholderTextColor={Colors[colorScheme ?? "light"].textColor}>
-        </TextInput>
-
+        placeholderTextColor={Colors[colorScheme ?? "light"].textColor}
+        secureTextEntry/>
+   
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Log In</Text>
         </TouchableOpacity>
 
-        <Link href="/CreateAccount" asChild>
+        <Link href="/Register" asChild>
             <TouchableOpacity>
                 <Text style={{marginTop: 20}}>No tienes una cuenta? Registrate aqui</Text>
             </TouchableOpacity>
         </Link>
-
+        
         <Link href="/RecoverMail" asChild>
             <TouchableOpacity>
                 <Text style={{marginTop: 40}}>Olvidaste tu contraseña? Presione aqui</Text>
             </TouchableOpacity>
         </Link>
-        
     </View>
     
 );

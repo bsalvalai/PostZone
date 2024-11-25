@@ -1,11 +1,14 @@
 /* eslint-disable prettier/prettier */
 import { Text, View } from "@/components/Themed";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 
 export default function FavouritesScreen() {
 
-  //TRAER LOS POSTEOS FAVORITOS
+  useEffect(()=>{
+    //TRAER LOS POSTEOS FAVORITOS CON AXIOS
+  },[])
+  
 
   
   return (

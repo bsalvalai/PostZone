@@ -13,19 +13,14 @@ import { cld } from "@/constants/Cloudinary";
 import React from "react";
 
 export default function SetProfilePhoto() {
-    let { firstName, lastName, mail, password, username, gender} = useLocalSearchParams();
+    let { name, mail, password, username, gender} = useLocalSearchParams();
     const colorScheme = useColorScheme();
-    const [image, setImage] = useState("")
+    const [profileImage, setImage] = useState("")
     const { width } = Dimensions.get("screen");
 
-    const defaultImage = cld.image("default_icon_bvd2di")
+    const defaultImage = cld.image("default_icon_bvd2di") //IMAGEN DE PERFIL POR DEFECTO
 
-    console.log("nombre: ", firstName)
-    console.log("apellido: ", lastName)
-    console.log("mail: ", mail)
-    console.log("password", password)
-    console.log("username: ", username)
-    console.log("gender: ", gender) 
+
     const handleChooser = async() =>{
         Alert.alert("Tipo de foto","Seleccione si quiere sacar una foto con su camara o elegir de la galeria",[
             {text: "Camara", onPress:() => handleCamera() },
@@ -73,20 +68,20 @@ export default function SetProfilePhoto() {
     }
 
     const handleDeleteImage = () => {
-        if(image){
+        if(profileImage){
             setImage("")
         }
     }
 
     const handleNext = () => {
         //MANEJAR EL TEMA DE QUE HAYA O NO IMAGEN. QUIZAS SE PUEDE AGREGAR COMO UN ASSET EN el cloudinary
-        if(!image){
+        if(!profileImage){
             setImage("")
         }
 
         router.push({
             pathname: "/SetCoverPhoto", 
-            params: {mail, password, image}
+            params: {name, mail, password, username,gender, profileImage}
         })
     }
 
@@ -98,15 +93,15 @@ export default function SetProfilePhoto() {
             }}
         />
 
-        {!image && <Image source={{uri: defaultImage.toURL()}} style={[styles.image, {height: width}]}/>}
-        {image && <Image source={{uri: image}} style={[styles.image, {height: width}]}/>}
+        {!profileImage && <Image source={{uri: defaultImage.toURL()}} style={[styles.image, {height: width}]}/>}
+        {profileImage && <Image source={{uri: profileImage}} style={[styles.image, {height: width}]}/>}
         <TouchableOpacity style={styles.button} onPress={handleChooser}>
             <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Agregar Foto</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleNext}>
             <Text style={[{color: "#FFFFFF"}, {fontSize: 16}, {justifyContent: "center"}]}>Siguiente</Text>
         </TouchableOpacity>
-        {image && 
+        {profileImage && 
         <TouchableOpacity onPress={handleDeleteImage}>
             <Text style={[{color:"#5081FF"}, {marginBottom: 10}]}>Borrar</Text>
         </TouchableOpacity>}

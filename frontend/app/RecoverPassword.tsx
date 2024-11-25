@@ -20,7 +20,10 @@ export default function RecoverPassword(){
     const [token, onChangeToken] = useState("")
   
     const handleTokenSender = () => {
+        //VALIDAR EL TOKEN
     }
+
+
     return (
       <View style={styles.container}>
         <Stack.Screen
